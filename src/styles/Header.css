@@ -1,0 +1,106 @@
+/* Header.css */
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 20px;
+  height: 70px;
+  background-color: #4a6fa5;
+  color: white;
+  width: 100%; /* 전체 너비 차지 */
+  position: relative; /* 필요에 따라 fixed로 변경 가능 */
+  z-index: 10; /* 다른 요소 위에 표시 */
+}
+
+.header-logo {
+  display: flex;
+  align-items: center;
+}
+
+.logo-circle {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.logo-circle img {
+  width: 40px;
+  height: 40px;
+  object-fit: contain;
+}
+
+.logo-text {
+  margin-left: 10px;
+  font-size: 22px;
+  font-weight: bold;
+}
+
+.search-form {
+  flex: 1;
+  display: flex;
+  max-width: 500px;
+  margin: 0 20px;
+}
+
+.search-input {
+  width: 100%;
+  padding: 8px 15px;
+  border-radius: 18px 0px 0px 18px;
+  border: none;
+  font-size: 14px;
+}
+
+.search-button {
+  background-color: white;
+  width: 60px;
+  border: none;
+  border-radius: 0px 18px 18px 0px;
+  padding: 5px 8px;
+  color: #4a6fa5;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.search-input:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.3);
+}
+
+.user-section {
+  display: flex;
+  align-items: center;
+}
+
+.user-greeting {
+  margin-right: 15px;
+  font-size: 14px;
+}
+
+.btn-outline {
+  background-color: transparent;
+  border: 1px solid white;
+  color: white;
+  margin-right: 10px;
+}
+
+.btn-outline:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.user-avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background-color: white;
+  color: #4a6fa5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  margin-left: 15px;
+}

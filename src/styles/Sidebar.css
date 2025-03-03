@@ -1,0 +1,141 @@
+/* Sidebar.css */
+.sidebar {
+  width: 220px;
+  height: calc(100vh - 70px); /* 헤더 높이를 제외한 전체 높이 */
+  background-color: #e9ecef;
+  padding: 20px 0;
+  overflow-y: auto;
+  flex-shrink: 0; /* 사이드바 크기 고정 */
+}
+
+.menu-section-title {
+  font-size: 13px;
+  font-weight: bold;
+  color: #6c757d;
+  text-transform: uppercase;
+  margin: 25px 0 10px 20px;
+}
+
+.menu-list {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+.menu-item {
+  margin-bottom: 5px;
+  position: relative; /* 드롭다운 메뉴의 기준점 */
+}
+
+.menu-item button {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  padding: 12px 20px;
+  background: none;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 15px;
+  text-align: left;
+  color: #495057;
+  transition: background-color 0.2s;
+}
+
+.menu-item.active button {
+  background-color: #4a6fa5;
+  color: white;
+}
+
+.menu-item:not(.active) button:hover {
+  background-color: #dee2e6;
+}
+
+.menu-icon {
+  width: 20px;
+  height: 20px;
+  margin-right: 12px;
+  flex-shrink: 0;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.admin-btn {
+  color: #4a6fa5 !important;
+}
+
+.menu-item.active .admin-btn {
+  color: white !important;
+}
+
+/* 드롭다운 토글 버튼 스타일 */
+.dropdown-toggle {
+  justify-content: space-between;
+  position: relative;
+}
+
+.dropdown-arrow {
+  width: 16px;
+  height: 16px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  transition: transform 0.3s ease;
+  margin-left: auto;
+}
+
+.dropdown-arrow.open {
+  transform: rotate(180deg);
+}
+
+/* 드롭다운 메뉴 스타일 */
+.dropdown-menu {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease, padding 0.3s ease;
+  background-color: #f8f9fa;
+  margin: 0 4px;
+  border-radius: 0 0 8px 8px;
+  display: flex;
+  flex-direction: column;
+}
+
+.dropdown-menu.open {
+  max-height: 300px; /* 드롭다운 최대 높이 */
+  padding: 6px 0;
+}
+
+.dropdown-item {
+  background: none;
+  border: none;
+  padding: 8px 15px 8px 45px; /* 좌측 패딩으로 들여쓰기 효과 */
+  text-align: left;
+  font-size: 14px;
+  color: #495057; /* 모든 항목 동일한 색상 */
+  cursor: pointer;
+  transition: background-color 0.2s;
+  position: relative;
+}
+
+.dropdown-item:hover {
+  background-color: #e2e6ea;
+}
+
+/* 선택된 드롭다운 아이템 스타일 - 글자만 볼드처리 */
+.dropdown-item.selected {
+  font-weight: 700; /* 선택된 항목 볼더 처리 */
+}
+
+/* 선택된 항목 체크 아이콘 */
+.dropdown-item.selected::before {
+  content: "✓";
+  position: absolute;
+  left: 20px;
+  color: #495057; /* 일반 텍스트와 동일한 색상 */
+  font-weight: bold;
+}
