@@ -24,18 +24,41 @@ const Sidebar = ({
     propSelectedArtist || "방탄소년단"
   );
 
+  // 드롭다운 아이템이 선택되었는지 확인
+  const [hasGenreSelection, setHasGenreSelection] = useState(false);
+  const [hasArtistSelection, setHasArtistSelection] = useState(false);
+
   // props가 변경될 때 내부 상태 업데이트
   useEffect(() => {
     if (propSelectedGenre) {
       setSelectedGenre(propSelectedGenre);
+      setHasGenreSelection(activeMenu === "byGenre");
     }
-  }, [propSelectedGenre]);
+  }, [propSelectedGenre, activeMenu]);
 
   useEffect(() => {
     if (propSelectedArtist) {
       setSelectedArtist(propSelectedArtist);
+      setHasArtistSelection(activeMenu === "byArtist");
     }
-  }, [propSelectedArtist]);
+  }, [propSelectedArtist, activeMenu]);
+
+  // activeMenu 변경 감지하여 드롭다운 상태 업데이트
+  useEffect(() => {
+    // 메뉴가 장르/가수 관련이 아니면 드롭다운을 닫고 선택 상태 초기화
+    if (activeMenu !== "byGenre" && activeMenu !== "byArtist") {
+      setGenreDropdownOpen(false);
+      setArtistDropdownOpen(false);
+      setHasGenreSelection(false);
+      setHasArtistSelection(false);
+    } else if (activeMenu === "byGenre") {
+      setHasGenreSelection(true);
+      setHasArtistSelection(false);
+    } else if (activeMenu === "byArtist") {
+      setHasArtistSelection(true);
+      setHasGenreSelection(false);
+    }
+  }, [activeMenu]);
 
   // 샘플 장르 목록
   const genres = [
@@ -67,16 +90,28 @@ const Sidebar = ({
 
   // 장르 선택 핸들러
   const handleGenreSelect = (genre) => {
+    setSelectedGenre(genre);
     onGenreSelect(genre);
-    // 드롭다운 닫기 (선택 후에도 열려있게 하려면 주석 처리)
-    // setGenreDropdownOpen(false);
+    setHasGenreSelection(true);
+    setHasArtistSelection(false);
   };
 
   // 가수 선택 핸들러
   const handleArtistSelect = (artist) => {
+    setSelectedArtist(artist);
     onArtistSelect(artist);
-    // 드롭다운 닫기 (선택 후에도 열려있게 하려면 주석 처리)
-    // setArtistDropdownOpen(false);
+    setHasArtistSelection(true);
+    setHasGenreSelection(false);
+  };
+
+  // 다른 메뉴 선택 핸들러
+  const handleMenuChange = (menu) => {
+    // 다른 메뉴 선택 시 드롭다운 선택 상태 초기화
+    if (menu !== "byGenre" && menu !== "byArtist") {
+      setHasGenreSelection(false);
+      setHasArtistSelection(false);
+    }
+    onMenuChange(menu);
   };
 
   // 장르 드롭다운 토글 (메뉴 변경 없이 단순 토글)
@@ -101,9 +136,13 @@ const Sidebar = ({
       <nav className="main-menu">
         <ul className="menu-list">
           <li
-            className={`menu-item ${activeMenu === "allSongs" ? "active" : ""}`}
+            className={`menu-item ${
+              activeMenu === "allSongs" && !hasGenreSelection && !hasArtistSelection
+                ? "active"
+                : ""
+            }`}
           >
-            <button onClick={() => onMenuChange("allSongs")}>
+            <button onClick={() => handleMenuChange("allSongs")}>
               <svg className="menu-icon" viewBox="0 0 24 24">
                 <path d="M4 6h16M4 12h16M4 18h16" />
               </svg>
@@ -113,7 +152,9 @@ const Sidebar = ({
 
           {/* 장르별 보기 (드롭다운) */}
           <li
-            className={`menu-item ${activeMenu === "byGenre" ? "active" : ""}`}
+            className={`menu-item ${
+              hasGenreSelection ? "has-dropdown-active" : ""
+            } ${activeMenu === "byGenre" && !hasGenreSelection ? "active" : ""}`}
           >
             <button onClick={toggleGenreDropdown} className="dropdown-toggle">
               <svg className="menu-icon" viewBox="0 0 24 24">
@@ -134,7 +175,7 @@ const Sidebar = ({
                 <button
                   key={genre}
                   className={`dropdown-item ${
-                    selectedGenre === genre ? "selected" : ""
+                    hasGenreSelection && selectedGenre === genre ? "selected" : ""
                   }`}
                   onClick={() => handleGenreSelect(genre)}
                 >
@@ -146,7 +187,9 @@ const Sidebar = ({
 
           {/* 가수별 보기 (드롭다운) */}
           <li
-            className={`menu-item ${activeMenu === "byArtist" ? "active" : ""}`}
+            className={`menu-item ${
+              hasArtistSelection ? "has-dropdown-active" : ""
+            } ${activeMenu === "byArtist" && !hasArtistSelection ? "active" : ""}`}
           >
             <button onClick={toggleArtistDropdown} className="dropdown-toggle">
               <svg className="menu-icon" viewBox="0 0 24 24">
@@ -169,7 +212,7 @@ const Sidebar = ({
                 <button
                   key={artist}
                   className={`dropdown-item ${
-                    selectedArtist === artist ? "selected" : ""
+                    hasArtistSelection && selectedArtist === artist ? "selected" : ""
                   }`}
                   onClick={() => handleArtistSelect(artist)}
                 >
@@ -181,10 +224,12 @@ const Sidebar = ({
 
           <li
             className={`menu-item ${
-              activeMenu === "byDifficulty" ? "active" : ""
+              activeMenu === "byDifficulty" && !hasGenreSelection && !hasArtistSelection
+                ? "active"
+                : ""
             }`}
           >
-            <button onClick={() => onMenuChange("byDifficulty")}>
+            <button onClick={() => handleMenuChange("byDifficulty")}>
               <svg className="menu-icon" viewBox="0 0 24 24">
                 <path d="M13 10V3L4 14h7v7l9-11h-7z" />
               </svg>
@@ -194,10 +239,12 @@ const Sidebar = ({
 
           <li
             className={`menu-item ${
-              activeMenu === "favorites" ? "active" : ""
+              activeMenu === "favorites" && !hasGenreSelection && !hasArtistSelection
+                ? "active"
+                : ""
             }`}
           >
-            <button onClick={() => onMenuChange("favorites")}>
+            <button onClick={() => handleMenuChange("favorites")}>
               <svg className="menu-icon" viewBox="0 0 24 24">
                 <path d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
               </svg>

@@ -145,6 +145,15 @@ const App = () => {
     setActiveMenu("allSongs");
   };
 
+  // 메뉴 변경 핸들러 - 검색 초기화 추가
+  const handleMenuChange = (menu) => {
+    // 메뉴가 변경되면 검색어 초기화
+    if (searchQuery && menu !== activeMenu) {
+      setSearchQuery("");
+    }
+    setActiveMenu(menu);
+  };
+
   // activeMenu 또는 검색어 변경 시 필터링 적용
   useEffect(() => {
     applyFilters();
@@ -182,12 +191,20 @@ const App = () => {
 
   // 장르 선택 핸들러
   const handleGenreSelect = (genre) => {
+    // 장르 선택 시 검색어 초기화
+    if (searchQuery) {
+      setSearchQuery("");
+    }
     setSelectedGenre(genre);
     setActiveMenu("byGenre");
   };
 
   // 가수 선택 핸들러
   const handleArtistSelect = (artist) => {
+    // 가수 선택 시 검색어 초기화
+    if (searchQuery) {
+      setSearchQuery("");
+    }
     setSelectedArtist(artist);
     setActiveMenu("byArtist");
   };
@@ -239,6 +256,7 @@ const App = () => {
         isLoggedIn={isLoggedIn}
         isAdmin={isAdmin}
         onSearch={handleSearch}
+        searchQuery={searchQuery}
         onLogin={() => setShowLoginModal(true)}
         onLogout={handleLogout}
       />
@@ -250,7 +268,7 @@ const App = () => {
           activeMenu={activeMenu}
           selectedGenre={selectedGenre}
           selectedArtist={selectedArtist}
-          onMenuChange={setActiveMenu}
+          onMenuChange={handleMenuChange}
           onAddSong={() => setShowAddModal(true)}
           onManageSongs={() => setShowManageModal(true)}
           onGenreSelect={handleGenreSelect}

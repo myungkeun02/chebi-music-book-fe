@@ -42,9 +42,16 @@
   transition: background-color 0.2s;
 }
 
+/* 활성화된 메뉴 아이템 (드롭다운 제외) */
 .menu-item.active button {
   background-color: #4a6fa5;
   color: white;
+}
+
+/* 드롭다운이 활성화된 경우, 상위 버튼은 일반 상태 유지 */
+.menu-item.has-dropdown-active button {
+  background-color: transparent;
+  color: #495057;
 }
 
 .menu-item:not(.active) button:hover {
@@ -93,7 +100,7 @@
   transform: rotate(180deg);
 }
 
-/* 드롭다운 메뉴 스타일 */
+/* 드롭다운 메뉴 스타일 - 항상 모든 항목 표시 */
 .dropdown-menu {
   max-height: 0;
   overflow: hidden;
@@ -106,19 +113,20 @@
 }
 
 .dropdown-menu.open {
-  max-height: 300px; /* 드롭다운 최대 높이 */
+  max-height: 1500px; /* 충분히 큰 값으로 조정하여 모든 항목 표시 */
   padding: 6px 0;
 }
 
+/* 기본 드롭다운 아이템 스타일 */
 .dropdown-item {
   background: none;
   border: none;
   padding: 8px 15px 8px 45px; /* 좌측 패딩으로 들여쓰기 효과 */
   text-align: left;
   font-size: 14px;
-  color: #495057; /* 모든 항목 동일한 색상 */
+  color: #495057;
   cursor: pointer;
-  transition: background-color 0.2s;
+  transition: background-color 0.2s, color 0.2s;
   position: relative;
 }
 
@@ -126,16 +134,13 @@
   background-color: #e2e6ea;
 }
 
-/* 선택된 드롭다운 아이템 스타일 - 글자만 볼드처리 */
+/* 선택된 드롭다운 아이템에만 스타일 적용 */
 .dropdown-item.selected {
-  font-weight: 700; /* 선택된 항목 볼더 처리 */
+  background-color: #4a6fa5 !important;
+  color: white !important;
 }
 
-/* 선택된 항목 체크 아이콘 */
-.dropdown-item.selected::before {
-  content: "✓";
-  position: absolute;
-  left: 20px;
-  color: #495057; /* 일반 텍스트와 동일한 색상 */
-  font-weight: bold;
+/* 체크 아이콘 제거 */
+.dropdown-item::before {
+  content: none;
 }
