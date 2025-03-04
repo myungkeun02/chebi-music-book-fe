@@ -6,6 +6,9 @@ import AddSongModal from "./components/AddSongModal";
 import ManageSongsModal from "./components/ManageSongsModal";
 import EditSongModal from "./components/EditSongModal";
 import LoginModal from "./components/LoginModal";
+import FeatureUnderDevelopmentModal from "./components/FeatureUnderDevelopmentModal";
+import ConfirmDeleteModal from "./components/ConfirmDeleteModal";
+import SongDetailModal from "./components/SongDetailModal";
 import "./App.css";
 import "./index.css";
 
@@ -19,6 +22,13 @@ const App = () => {
   const [showAddModal, setShowAddModal] = useState(false);
   const [showManageModal, setShowManageModal] = useState(false);
   const [editingSong, setEditingSong] = useState(null);
+  
+  // 새 모달 상태
+  const [showFeatureModal, setShowFeatureModal] = useState(false);
+  const [showConfirmDeleteModal, setShowConfirmDeleteModal] = useState(false);
+  const [songToDelete, setSongToDelete] = useState(null);
+  const [selectedSong, setSelectedSong] = useState(null);
+  const [showSongDetailModal, setShowSongDetailModal] = useState(false);
 
   // 메뉴 상태
   const [activeMenu, setActiveMenu] = useState("allSongs");
@@ -37,6 +47,8 @@ const App = () => {
       genre: "K-POP",
       difficulty: "쉬움",
       coverImage: null,
+      youtubeLink: "https://www.youtube.com/watch?v=2ips2mM7Zqw",
+      soopLink: "https://example.com/soop/1"
     },
     {
       id: 2,
@@ -45,6 +57,8 @@ const App = () => {
       genre: "K-POP",
       difficulty: "보통",
       coverImage: null,
+      youtubeLink: "https://www.youtube.com/watch?v=gdZLi9oWNZg",
+      soopLink: "https://example.com/soop/2"
     },
     {
       id: 3,
@@ -53,6 +67,8 @@ const App = () => {
       genre: "Jazz",
       difficulty: "어려움",
       coverImage: null,
+      youtubeLink: "https://www.youtube.com/watch?v=ZEcqHA7dbwM",
+      soopLink: "https://example.com/soop/3"
     },
     {
       id: 4,
@@ -61,6 +77,8 @@ const App = () => {
       genre: "Hip-Hop",
       difficulty: "보통",
       coverImage: null,
+      youtubeLink: "https://www.youtube.com/watch?v=UuV2BmJ1p_I",
+      soopLink: "https://example.com/soop/4"
     },
     {
       id: 5,
@@ -69,6 +87,8 @@ const App = () => {
       genre: "K-POP",
       difficulty: "쉬움",
       coverImage: null,
+      youtubeLink: "https://www.youtube.com/watch?v=nQQ8mtrR_cg",
+      soopLink: "https://example.com/soop/5"
     },
     {
       id: 6,
@@ -77,6 +97,8 @@ const App = () => {
       genre: "K-POP",
       difficulty: "보통",
       coverImage: null,
+      youtubeLink: "https://www.youtube.com/watch?v=0-q1KafFCLU",
+      soopLink: "https://example.com/soop/6"
     },
     {
       id: 7,
@@ -85,6 +107,8 @@ const App = () => {
       genre: "K-POP",
       difficulty: "쉬움",
       coverImage: null,
+      youtubeLink: "https://www.youtube.com/watch?v=SK6Sm2Ki9tI",
+      soopLink: "https://example.com/soop/7"
     },
     {
       id: 8,
@@ -93,6 +117,8 @@ const App = () => {
       genre: "K-POP",
       difficulty: "보통",
       coverImage: null,
+      youtubeLink: "https://www.youtube.com/watch?v=4TWR90KJl84",
+      soopLink: "https://example.com/soop/8"
     },
   ]);
 
@@ -213,14 +239,38 @@ const App = () => {
   const handleAddSong = (newSong) => {
     const newId =
       allSongs.length > 0 ? Math.max(...allSongs.map((s) => s.id)) + 1 : 1;
-    const songToAdd = { ...newSong, id: newId };
+    const songToAdd = { 
+      ...newSong, 
+      id: newId,
+      youtubeLink: `https://www.youtube.com/results?search_query=${encodeURIComponent(`${newSong.title} ${newSong.artist}`)}`,
+      soopLink: `https://example.com/soop/${newId}`
+    };
     setAllSongs([...allSongs, songToAdd]);
     setShowAddModal(false);
   };
 
+  // 노래 상세 정보 모달 열기
+  const handleOpenSongDetail = (song) => {
+    setSelectedSong(song);
+    setShowSongDetailModal(true);
+  };
+
+  // 노래 삭제 확인 모달 열기
+  const handleOpenDeleteConfirm = (id) => {
+    const song = allSongs.find(song => song.id === id);
+    if (song) {
+      setSongToDelete(song);
+      setShowConfirmDeleteModal(true);
+    }
+  };
+
   // 노래 삭제 핸들러
-  const handleDeleteSong = (id) => {
-    setAllSongs(allSongs.filter((song) => song.id !== id));
+  const handleDeleteSong = () => {
+    if (songToDelete) {
+      setAllSongs(allSongs.filter((song) => song.id !== songToDelete.id));
+      setShowConfirmDeleteModal(false);
+      setSongToDelete(null);
+    }
   };
 
   // 노래 수정 핸들러
@@ -229,6 +279,11 @@ const App = () => {
       allSongs.map((song) => (song.id === updatedSong.id ? updatedSong : song))
     );
     setEditingSong(null);
+  };
+
+  // 사용자 관리 기능 (준비 중) 모달 열기
+  const handleUserManagement = () => {
+    setShowFeatureModal(true);
   };
 
   // 현재 선택된 필터 정보 (제목)
@@ -273,6 +328,7 @@ const App = () => {
           onManageSongs={() => setShowManageModal(true)}
           onGenreSelect={handleGenreSelect}
           onArtistSelect={handleArtistSelect}
+          onUserManagement={handleUserManagement}
         />
 
         <main className="content">
@@ -291,8 +347,9 @@ const App = () => {
           <SongList
             songs={filteredSongs}
             isAdmin={isAdmin}
-            onDeleteSong={handleDeleteSong}
+            onDeleteSong={handleOpenDeleteConfirm}
             onEditSong={setEditingSong}
+            onSongClick={handleOpenSongDetail}
           />
         </main>
       </div>
@@ -318,7 +375,7 @@ const App = () => {
         <ManageSongsModal
           songs={allSongs}
           onClose={() => setShowManageModal(false)}
-          onDeleteSong={handleDeleteSong}
+          onDeleteSong={handleOpenDeleteConfirm}
           onUpdateSong={handleUpdateSong}
         />
       )}
@@ -329,6 +386,36 @@ const App = () => {
           song={editingSong}
           onClose={() => setEditingSong(null)}
           onUpdateSong={handleUpdateSong}
+        />
+      )}
+
+      {/* 기능 준비 중 모달 */}
+      {showFeatureModal && (
+        <FeatureUnderDevelopmentModal 
+          onClose={() => setShowFeatureModal(false)} 
+        />
+      )}
+
+      {/* 삭제 확인 모달 */}
+      {showConfirmDeleteModal && songToDelete && (
+        <ConfirmDeleteModal
+          songTitle={songToDelete.title}
+          onClose={() => {
+            setShowConfirmDeleteModal(false);
+            setSongToDelete(null);
+          }}
+          onConfirm={handleDeleteSong}
+        />
+      )}
+
+      {/* 노래 상세 정보 모달 */}
+      {showSongDetailModal && selectedSong && (
+        <SongDetailModal
+          song={selectedSong}
+          onClose={() => {
+            setShowSongDetailModal(false);
+            setSelectedSong(null);
+          }}
         />
       )}
     </div>

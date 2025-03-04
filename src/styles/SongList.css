@@ -16,19 +16,19 @@
 }
 
 .empty-icon {
-  font-size: 80px;
+  font-size: 84px;
   color: #adb5bd;
   margin-bottom: 20px;
 }
 
 .empty-text {
-  font-size: 24px;
+  font-size: 30px;
   font-weight: bold;
   color: #495057;
   margin-bottom: 10px;
 }
 
 .empty-subtext {
-  font-size: 16px;
+  font-size: 20px;
   color: #6c757d;
 }

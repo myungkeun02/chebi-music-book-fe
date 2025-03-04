@@ -11,6 +11,7 @@ const Sidebar = ({
   onManageSongs,
   onGenreSelect,
   onArtistSelect,
+  onUserManagement
 }) => {
   // 드롭다운 상태 관리
   const [genreDropdownOpen, setGenreDropdownOpen] = useState(false);
@@ -128,6 +129,11 @@ const Sidebar = ({
     setArtistDropdownOpen(!artistDropdownOpen);
     // 다른 드롭다운이 열려있으면 닫기
     if (genreDropdownOpen) setGenreDropdownOpen(false);
+  };
+
+  // 외부 링크 열기 함수
+  const openExternalLink = (url) => {
+    window.open(url, '_blank', 'noopener,noreferrer');
   };
 
   return (
@@ -278,7 +284,7 @@ const Sidebar = ({
             </li>
 
             <li className="menu-item">
-              <button className="admin-btn">
+              <button onClick={onUserManagement} className="admin-btn">
                 <svg className="menu-icon" viewBox="0 0 24 24">
                   <path d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
                 </svg>
@@ -288,6 +294,34 @@ const Sidebar = ({
           </ul>
         </div>
       )}
+      
+      {/* 외부 링크 버튼 영역 */}
+      <div className="sidebar-link">
+        <button 
+          className="youtube-button"
+          onClick={() => openExternalLink("https://www.youtube.com/@chebi333")}
+        >
+          <svg className="link-icon" viewBox="0 0 24 24" width="20" height="20">
+            <path
+              d="M10 15l5.19-3L10 9v6m11.56-7.83c.13.47.22 1.1.28 1.9.07.8.1 1.49.1 2.09L22 12c0 2.19-.16 3.8-.44 4.83-.25.9-.83 1.48-1.73 1.73-.47.13-1.33.22-2.65.28-1.3.07-2.49.1-3.59.1L12 19c-4.19 0-6.8-.16-7.83-.44-.9-.25-1.48-.83-1.73-1.73-.13-.47-.22-1.1-.28-1.9-.07-.8-.1-1.49-.1-2.09L2 12c0-2.19.16-3.8.44-4.83.25-.9.83-1.48 1.73-1.73.47-.13 1.33-.22 2.65-.28 1.3-.07 2.49-.1 3.59-.1L12 5c4.19 0 6.8.16 7.83.44.9.25 1.48.83 1.73 1.73z"
+              fill="currentColor"
+            />
+          </svg>
+          유튜브
+        </button>
+        <button 
+          className="soop-button"
+          onClick={() => openExternalLink("https://ch.sooplive.co.kr/chebi2")}
+        >
+          <svg className="link-icon" viewBox="0 0 24 24" width="20" height="20">
+            <path
+              d="M9.5 3L8 4.5 11.5 8 8 11.5 9.5 13 14.5 8 9.5 3zm5 0L13 4.5 16.5 8 13 11.5 14.5 13 19.5 8 14.5 3z"
+              fill="currentColor"
+            />
+          </svg>
+          SOOP
+        </button>
+      </div>
     </aside>
   );
 };

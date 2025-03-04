@@ -1,7 +1,7 @@
 import React from "react";
 import "../styles/SongCard.css";
 
-const SongCard = ({ song, isAdmin, onEdit, onDelete }) => {
+const SongCard = ({ song, isAdmin, onEdit, onDelete, onClick }) => {
   // 난이도에 따른 배지 색상 설정
   const getDifficultyColor = (level) => {
     switch (level.toLowerCase()) {
@@ -26,13 +26,23 @@ const SongCard = ({ song, isAdmin, onEdit, onDelete }) => {
     return colors[randomIndex];
   };
 
+  // 클릭 이벤트 처리
+  const handleClick = (e) => {
+    // 이벤트가 편집/삭제 버튼에서 발생한 경우는 상세보기로 연결하지 않음
+    if (e.target.closest('.song-actions')) {
+      return;
+    }
+    onClick();
+  };
+
   return (
-    <div className="song-card">
+    <div className="song-card" onClick={handleClick}>
       <div
         className="song-cover"
         style={{
           backgroundColor: getRandomColor(),
           backgroundImage: song.coverImage ? `url(${song.coverImage})` : "none",
+          cursor: "pointer"
         }}
       >
         {!song.coverImage && <span className="music-note">♪</span>}
@@ -56,14 +66,20 @@ const SongCard = ({ song, isAdmin, onEdit, onDelete }) => {
           <div className="song-actions">
             <button
               className="action-btn edit-btn"
-              onClick={() => onEdit(song)}
+              onClick={(e) => {
+                e.stopPropagation();
+                onEdit(song);
+              }}
               aria-label="노래 편집"
             >
               ✎
             </button>
             <button
               className="action-btn delete-btn"
-              onClick={() => onDelete(song.id)}
+              onClick={(e) => {
+                e.stopPropagation();
+                onDelete(song.id);
+              }}
               aria-label="노래 삭제"
             >
               ×

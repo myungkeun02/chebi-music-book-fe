@@ -2,7 +2,7 @@ import React from "react";
 import SongCard from "./SongCard";
 import "../styles/SongList.css";
 
-const SongList = ({ songs, isAdmin, onDeleteSong, onEditSong }) => {
+const SongList = ({ songs, isAdmin, onDeleteSong, onEditSong, onSongClick }) => {
   // 노래가 없을 경우
   if (songs.length === 0) {
     return (
@@ -27,6 +27,7 @@ const SongList = ({ songs, isAdmin, onDeleteSong, onEditSong }) => {
           isAdmin={isAdmin}
           onEdit={onEditSong}
           onDelete={onDeleteSong}
+          onClick={() => onSongClick(song)}
         />
       ))}
     </div>

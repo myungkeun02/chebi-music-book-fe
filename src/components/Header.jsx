@@ -20,7 +20,7 @@ const Header = ({ isLoggedIn, isAdmin, onSearch, searchQuery: propSearchQuery, o
         <div className="logo-circle">
           <img src="/src/assets/image.png" alt="노래책 로고" />
         </div>
-        <h1 className="logo-text">노래책</h1>
+        <h1 className="logo-text">MUSIC-BOOK</h1>
       </div>
 
       <form className="search-form" onSubmit={handleSearch}>

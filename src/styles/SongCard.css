@@ -28,7 +28,7 @@
 }
 
 .music-note {
-  font-size: 40px;
+  font-size: 45px;
 }
 
 .song-info {
@@ -39,7 +39,7 @@
 }
 
 .song-title {
-  font-size: 16px;
+  font-size: 22px;
   font-weight: bold;
   color: #343a40;
   margin-bottom: 8px;
@@ -49,7 +49,7 @@
 }
 
 .song-artist {
-  font-size: 14px;
+  font-size: 20px;
   color: #6c757d;
   margin-bottom: 12px;
   overflow: hidden;
@@ -89,7 +89,7 @@
   justify-content: center;
   cursor: pointer;
   color: white;
-  font-size: 14px;
+  font-size: 20px;
 }
 
 .edit-btn {
