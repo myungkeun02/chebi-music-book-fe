@@ -22,7 +22,7 @@ const App = () => {
   const [showAddModal, setShowAddModal] = useState(false);
   const [showManageModal, setShowManageModal] = useState(false);
   const [editingSong, setEditingSong] = useState(null);
-  
+
   // 새 모달 상태
   const [showFeatureModal, setShowFeatureModal] = useState(false);
   const [showConfirmDeleteModal, setShowConfirmDeleteModal] = useState(false);
@@ -38,8 +38,8 @@ const App = () => {
   // 검색 상태
   const [searchQuery, setSearchQuery] = useState("");
 
-  // 모든 곡을 저장할 원본 배열과 필터링된 배열
-  const [allSongs, setAllSongs] = useState([
+  // 원본 노래 데이터
+  const originalSongs = [
     {
       id: 1,
       title: "뱅뱅뱅",
@@ -48,7 +48,7 @@ const App = () => {
       difficulty: "쉬움",
       coverImage: null,
       youtubeLink: "https://www.youtube.com/watch?v=2ips2mM7Zqw",
-      soopLink: "https://example.com/soop/1"
+      soopLink: "https://example.com/soop/1",
     },
     {
       id: 2,
@@ -58,7 +58,7 @@ const App = () => {
       difficulty: "보통",
       coverImage: null,
       youtubeLink: "https://www.youtube.com/watch?v=gdZLi9oWNZg",
-      soopLink: "https://example.com/soop/2"
+      soopLink: "https://example.com/soop/2",
     },
     {
       id: 3,
@@ -68,7 +68,7 @@ const App = () => {
       difficulty: "어려움",
       coverImage: null,
       youtubeLink: "https://www.youtube.com/watch?v=ZEcqHA7dbwM",
-      soopLink: "https://example.com/soop/3"
+      soopLink: "https://example.com/soop/3",
     },
     {
       id: 4,
@@ -78,7 +78,7 @@ const App = () => {
       difficulty: "보통",
       coverImage: null,
       youtubeLink: "https://www.youtube.com/watch?v=UuV2BmJ1p_I",
-      soopLink: "https://example.com/soop/4"
+      soopLink: "https://example.com/soop/4",
     },
     {
       id: 5,
@@ -88,7 +88,7 @@ const App = () => {
       difficulty: "쉬움",
       coverImage: null,
       youtubeLink: "https://www.youtube.com/watch?v=nQQ8mtrR_cg",
-      soopLink: "https://example.com/soop/5"
+      soopLink: "https://example.com/soop/5",
     },
     {
       id: 6,
@@ -98,7 +98,7 @@ const App = () => {
       difficulty: "보통",
       coverImage: null,
       youtubeLink: "https://www.youtube.com/watch?v=0-q1KafFCLU",
-      soopLink: "https://example.com/soop/6"
+      soopLink: "https://example.com/soop/6",
     },
     {
       id: 7,
@@ -108,7 +108,7 @@ const App = () => {
       difficulty: "쉬움",
       coverImage: null,
       youtubeLink: "https://www.youtube.com/watch?v=SK6Sm2Ki9tI",
-      soopLink: "https://example.com/soop/7"
+      soopLink: "https://example.com/soop/7",
     },
     {
       id: 8,
@@ -118,11 +118,73 @@ const App = () => {
       difficulty: "보통",
       coverImage: null,
       youtubeLink: "https://www.youtube.com/watch?v=4TWR90KJl84",
-      soopLink: "https://example.com/soop/8"
+      soopLink: "https://example.com/soop/8",
     },
-  ]);
+  ];
 
+  // 노래 데이터를 300개 이상으로 복제
+  const generateExpandedSongList = () => {
+    const expandedSongs = [];
+    const genres = [
+      "K-POP",
+      "Pop",
+      "Rock",
+      "Hip-Hop",
+      "Jazz",
+      "R&B",
+      "Electronic",
+      "Classic",
+      "Trot",
+    ];
+    const difficulties = ["쉬움", "보통", "어려움"];
+    const artists = [
+      "방탄소년단",
+      "빅뱅",
+      "블랙핑크",
+      "트와이스",
+      "아이유",
+      "지코",
+      "브레이브걸스",
+      "에스파",
+      "Frank Sinatra",
+      "Adele",
+      "Queen",
+      "Bruno Mars",
+      "Beyoncé",
+      "Ed Sheeran",
+      "Ariana Grande",
+    ];
+
+    // 원본 노래 추가
+    expandedSongs.push(...originalSongs);
+
+    // 추가 노래 생성 (300개가 넘도록)
+    for (let i = originalSongs.length + 1; i <= 350; i++) {
+      const randomOriginal = originalSongs[i % originalSongs.length];
+
+      expandedSongs.push({
+        id: i,
+        title: `${randomOriginal.title} ${Math.floor(i / 8) + 1}`,
+        artist: artists[i % artists.length],
+        genre: genres[i % genres.length],
+        difficulty: difficulties[i % difficulties.length],
+        coverImage: null,
+        youtubeLink: `https://www.youtube.com/watch?v=example${i}`,
+        soopLink: `https://example.com/soop/${i}`,
+      });
+    }
+
+    return expandedSongs;
+  };
+
+  // 모든 곡을 저장할 원본 배열과 필터링된 배열
+  const [allSongs, setAllSongs] = useState([]);
   const [filteredSongs, setFilteredSongs] = useState([]);
+
+  // 초기화 시 확장된 노래 목록 생성
+  useEffect(() => {
+    setAllSongs(generateExpandedSongList());
+  }, []);
 
   // 세션 관리 (로컬 스토리지)
   useEffect(() => {
@@ -208,8 +270,8 @@ const App = () => {
     } else if (activeMenu === "byDifficulty") {
       result = result.filter((song) => song.difficulty === "쉬움");
     } else if (activeMenu === "favorites") {
-      // 자주 부르는 노래 기능 (예시로 첫 4개 항목)
-      result = result.slice(0, 4);
+      // 자주 부르는 노래 기능 (예시로 첫 12개 항목)
+      result = result.slice(0, 12);
     }
 
     setFilteredSongs(result);
@@ -239,11 +301,13 @@ const App = () => {
   const handleAddSong = (newSong) => {
     const newId =
       allSongs.length > 0 ? Math.max(...allSongs.map((s) => s.id)) + 1 : 1;
-    const songToAdd = { 
-      ...newSong, 
+    const songToAdd = {
+      ...newSong,
       id: newId,
-      youtubeLink: `https://www.youtube.com/results?search_query=${encodeURIComponent(`${newSong.title} ${newSong.artist}`)}`,
-      soopLink: `https://example.com/soop/${newId}`
+      youtubeLink: `https://www.youtube.com/results?search_query=${encodeURIComponent(
+        `${newSong.title} ${newSong.artist}`
+      )}`,
+      soopLink: `https://example.com/soop/${newId}`,
     };
     setAllSongs([...allSongs, songToAdd]);
     setShowAddModal(false);
@@ -257,7 +321,7 @@ const App = () => {
 
   // 노래 삭제 확인 모달 열기
   const handleOpenDeleteConfirm = (id) => {
-    const song = allSongs.find(song => song.id === id);
+    const song = allSongs.find((song) => song.id === id);
     if (song) {
       setSongToDelete(song);
       setShowConfirmDeleteModal(true);
@@ -391,8 +455,8 @@ const App = () => {
 
       {/* 기능 준비 중 모달 */}
       {showFeatureModal && (
-        <FeatureUnderDevelopmentModal 
-          onClose={() => setShowFeatureModal(false)} 
+        <FeatureUnderDevelopmentModal
+          onClose={() => setShowFeatureModal(false)}
         />
       )}
 

@@ -1,9 +1,15 @@
 /* SongList.css */
+.song-list-container {
+  display: flex;
+  flex-direction: column;
+}
+
 .song-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
   gap: 20px;
-  padding: 20px;
+  padding: 20px 0;
+  margin-bottom: 20px;
 }
 
 .empty-state {
@@ -31,4 +37,148 @@
 .empty-subtext {
   font-size: 20px;
   color: #6c757d;
+}
+
+/* 페이지네이션 스타일 */
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 20px 0;
+  padding: 10px;
+  background-color: white;
+  border-radius: 24px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+  width: fit-content;
+  align-self: center;
+}
+
+.pagination-btn {
+  background: none;
+  border: none;
+  color: #4a6fa5;
+  font-size: 20px;
+  cursor: pointer;
+  padding: 5px 12px;
+  margin: 0 4px;
+  border-radius: 12px;
+  transition: all 0.2s;
+  min-width: 60px;
+  text-align: center;
+  white-space: nowrap;
+}
+
+.pagination-btn:hover:not(:disabled) {
+  background-color: #e0e7f0;
+}
+
+.pagination-btn:disabled {
+  color: #adb5bd;
+  cursor: not-allowed;
+}
+
+.pagination-numbers {
+  display: flex;
+  gap: 2px;
+  margin: 0 8px;
+}
+
+.pagination-number {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: none;
+  border: none;
+  border-radius: 50%;
+  font-size: 20px;
+  cursor: pointer;
+  color: #495057;
+  transition: all 0.2s;
+}
+
+.pagination-number:hover {
+  background-color: #e0e7f0;
+}
+
+.pagination-number.active {
+  background-color: #4a6fa5;
+  color: white;
+}
+
+/* 페이지 정보 스타일 */
+.page-info {
+  text-align: center;
+  color: #6c757d;
+  font-size: 20px;
+  margin-bottom: 20px;
+  display: flex;
+  justify-content: center;
+}
+
+/* 모바일 반응형 디자인 */
+@media (max-width: 768px) {
+  .song-grid {
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 15px;
+    padding: 15px 0;
+  }
+
+  .pagination {
+    flex-wrap: wrap;
+    padding: 8px;
+    gap: 5px;
+  }
+
+  .pagination-btn {
+    font-size: 18px;
+    padding: 5px 8px;
+    min-width: 50px;
+    margin: 0 2px;
+  }
+
+  .pagination-number {
+    width: 28px;
+    height: 28px;
+    font-size: 18px;
+  }
+
+  .page-info {
+    font-size: 18px;
+  }
+}
+
+/* 페이지네이션 애니메이션 */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.pagination,
+.page-info {
+  animation: fadeInUp 0.3s ease-out;
+}
+
+/* 액티브 페이지 애니메이션 */
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.pagination-number.active {
+  animation: pulse 0.5s ease-in-out;
 }
