@@ -7,19 +7,20 @@ const SongDetailModal = ({ song, onClose }) => {
   // 텍스트 복사 기능
   const copyToClipboard = () => {
     const textToCopy = `${song.title} - ${song.artist}`;
-    navigator.clipboard.writeText(textToCopy)
+    navigator.clipboard
+      .writeText(textToCopy)
       .then(() => {
         setCopySuccess(true);
         setTimeout(() => setCopySuccess(false), 2000);
       })
       .catch((err) => {
-        console.error('Failed to copy: ', err);
+        console.error("Failed to copy: ", err);
       });
   };
 
   // 외부 링크 열기
   const openExternalLink = (url) => {
-    window.open(url, '_blank', 'noopener,noreferrer');
+    window.open(url, "_blank", "noopener,noreferrer");
   };
 
   // 난이도에 따른 배지 색상 설정
@@ -64,42 +65,59 @@ const SongDetailModal = ({ song, onClose }) => {
                 className="song-detail-cover"
                 style={{
                   backgroundColor: getRandomColor(),
-                  backgroundImage: song.coverImage ? `url(${song.coverImage})` : "none",
+                  backgroundImage: song.coverImage
+                    ? `url(${song.coverImage})`
+                    : "none",
                   width: "120px",
                   height: "120px",
                   borderRadius: "8px",
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "center",
-                  marginRight: "20px"
+                  marginRight: "20px",
+                  marginBottom: "20px",
                 }}
               >
-                {!song.coverImage && <span style={{ fontSize: "36px", color: "white" }}>♪</span>}
+                {!song.coverImage && (
+                  <span style={{ fontSize: "36px", color: "white" }}>♪</span>
+                )}
               </div>
 
               <div className="song-detail-info">
-                <h3 style={{ fontSize: "24px", marginBottom: "8px" }}>{song.title}</h3>
-                <p style={{ fontSize: "18px", marginBottom: "12px", color: "#555" }}>{song.artist}</p>
-                
-                <div style={{ display: "flex", gap: "8px", marginBottom: "12px" }}>
-                  <span 
-                    style={{ 
-                      padding: "4px 8px", 
-                      borderRadius: "4px", 
-                      backgroundColor: "#4a6fa5", 
-                      color: "white", 
-                      fontSize: "14px" 
+                <h3 style={{ fontSize: "24px", marginBottom: "8px" }}>
+                  {song.title}
+                </h3>
+                <p
+                  style={{
+                    fontSize: "18px",
+                    marginBottom: "12px",
+                    color: "#555",
+                  }}
+                >
+                  {song.artist}
+                </p>
+
+                <div
+                  style={{ display: "flex", gap: "8px", marginBottom: "12px" }}
+                >
+                  <span
+                    style={{
+                      padding: "4px 8px",
+                      borderRadius: "4px",
+                      backgroundColor: "#4a6fa5",
+                      color: "white",
+                      fontSize: "14px",
                     }}
                   >
                     {song.genre}
                   </span>
-                  <span 
-                    style={{ 
-                      padding: "4px 8px", 
-                      borderRadius: "4px", 
-                      backgroundColor: getDifficultyColor(song.difficulty), 
-                      color: "white", 
-                      fontSize: "14px" 
+                  <span
+                    style={{
+                      padding: "4px 8px",
+                      borderRadius: "4px",
+                      backgroundColor: getDifficultyColor(song.difficulty),
+                      color: "white",
+                      fontSize: "14px",
                     }}
                   >
                     {song.difficulty}
@@ -111,15 +129,31 @@ const SongDetailModal = ({ song, onClose }) => {
             {/* 상세 내용 섹션 */}
             <div className="song-detail-content" style={{ marginTop: "24px" }}>
               <h3 className="section-subtitle">링크 및 정보</h3>
-              
-              <div className="detail-actions" style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
+
+              <div
+                className="detail-actions"
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: "12px",
+                }}
+              >
                 {/* 복사 버튼 */}
                 <button
                   className="btn btn-secondary"
                   onClick={copyToClipboard}
-                  style={{ display: "flex", alignItems: "center", justifyContent: "center" }}
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}
                 >
-                  <svg viewBox="0 0 24 24" width="16" height="16" style={{ marginRight: "8px" }}>
+                  <svg
+                    viewBox="0 0 24 24"
+                    width="16"
+                    height="16"
+                    style={{ marginRight: "8px" }}
+                  >
                     <path
                       d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"
                       fill="currentColor"
@@ -131,10 +165,27 @@ const SongDetailModal = ({ song, onClose }) => {
                 {/* 유튜브 링크 버튼 */}
                 <button
                   className="btn btn-primary"
-                  onClick={() => openExternalLink(song.youtubeLink || `https://www.youtube.com/results?search_query=${encodeURIComponent(`${song.title} ${song.artist}`)}`)}
-                  style={{ display: "flex", alignItems: "center", justifyContent: "center", backgroundColor: "#FF0000" }}
+                  onClick={() =>
+                    openExternalLink(
+                      song.youtubeLink ||
+                        `https://www.youtube.com/results?search_query=${encodeURIComponent(
+                          `${song.title} ${song.artist}`
+                        )}`
+                    )
+                  }
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    backgroundColor: "#FF0000",
+                  }}
                 >
-                  <svg viewBox="0 0 24 24" width="16" height="16" style={{ marginRight: "8px" }}>
+                  <svg
+                    viewBox="0 0 24 24"
+                    width="16"
+                    height="16"
+                    style={{ marginRight: "8px" }}
+                  >
                     <path
                       d="M10 15l5.19-3L10 9v6m11.56-7.83c.13.47.22 1.1.28 1.9.07.8.1 1.49.1 2.09L22 12c0 2.19-.16 3.8-.44 4.83-.25.9-.83 1.48-1.73 1.73-.47.13-1.33.22-2.65.28-1.3.07-2.49.1-3.59.1L12 19c-4.19 0-6.8-.16-7.83-.44-.9-.25-1.48-.83-1.73-1.73-.13-.47-.22-1.1-.28-1.9-.07-.8-.1-1.49-.1-2.09L2 12c0-2.19.16-3.8.44-4.83.25-.9.83-1.48 1.73-1.73.47-.13 1.33-.22 2.65-.28 1.3-.07 2.49-.1 3.59-.1L12 5c4.19 0 6.8.16 7.83.44.9.25 1.48.83 1.73 1.73z"
                       fill="currentColor"
@@ -146,10 +197,23 @@ const SongDetailModal = ({ song, onClose }) => {
                 {/* SOOP 링크 버튼 */}
                 <button
                   className="btn btn-primary"
-                  onClick={() => openExternalLink(song.soopLink || `https://example.com/soop/${song.id}`)}
-                  style={{ display: "flex", alignItems: "center", justifyContent: "center" }}
+                  onClick={() =>
+                    openExternalLink(
+                      song.soopLink || `https://example.com/soop/${song.id}`
+                    )
+                  }
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}
                 >
-                  <svg viewBox="0 0 24 24" width="16" height="16" style={{ marginRight: "8px" }}>
+                  <svg
+                    viewBox="0 0 24 24"
+                    width="16"
+                    height="16"
+                    style={{ marginRight: "8px" }}
+                  >
                     <path
                       d="M9.5 3L8 4.5 11.5 8 8 11.5 9.5 13 14.5 8 9.5 3zm5 0L13 4.5 16.5 8 13 11.5 14.5 13 19.5 8 14.5 3z"
                       fill="currentColor"

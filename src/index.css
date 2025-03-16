@@ -1,11 +1,8 @@
-/* index.css - 전체 애플리케이션 기본 스타일 */
-@import url(//fonts.googleapis.com/earlyaccess/nanumpenscript.css);
-
 * {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
-  font-family: 'Nanum Pen Script', cursive;}
+}
 
 body {
   background-color: #f8f9fa;
@@ -17,7 +14,7 @@ body {
   border: none;
   border-radius: 20px;
   padding: 8px 16px;
-  font-size: 20px;
+  font-size: 17px;
   cursor: pointer;
   transition: background-color 0.2s;
   text-align: center;
@@ -55,7 +52,7 @@ body {
   border: 1px solid #ced4da;
   border-radius: 4px;
   padding: 8px 12px;
-  font-size: 24px;
+  font-size: 17px;
   width: 100%;
 }
 
@@ -68,13 +65,13 @@ body {
 .form-label {
   display: block;
   margin-bottom: 8px;
-  font-size: 20px;
+  font-size: 17px;
   color: #495057;
 }
 
 /* 공통 헤더 스타일 */
 .section-title {
-  font-size: 30px;
+  font-size: 17px;
   font-weight: bold;
   color: #343a40;
   margin-bottom: 16px;

@@ -36,7 +36,7 @@
 
 .logo-text {
   margin-left: 10px;
-  font-size: 28px;
+  font-size: 17px;
   font-weight: bold;
 }
 
@@ -52,7 +52,7 @@
   padding: 8px 15px;
   border-radius: 18px 0px 0px 18px;
   border: none;
-  font-size: 20px;
+  font-size: 17px;
 }
 
 .search-button {
@@ -62,7 +62,7 @@
   border-radius: 0px 18px 18px 0px;
   padding: 5px 8px;
   color: #4a6fa5;
-  font-size: 20px;
+  font-size: 17px;
   cursor: pointer;
 }
 
@@ -78,7 +78,7 @@
 
 .user-greeting {
   margin-right: 15px;
-  font-size: 20px;
+  font-size: 17px;
 }
 
 .btn-outline {

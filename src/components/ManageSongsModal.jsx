@@ -22,6 +22,18 @@ const ManageSongsModal = ({ songs, onClose, onDeleteSong, onUpdateSong }) => {
   const currentSongs = filteredSongs.slice(indexOfFirstSong, indexOfLastSong);
   const totalPages = Math.ceil(filteredSongs.length / songsPerPage);
 
+  // 페이지 그룹 계산 (한 번에 5개의 페이지 버튼만 표시)
+  const pageGroupSize = 5;
+  const currentGroup = Math.floor((currentPage - 1) / pageGroupSize);
+  const pageStart = currentGroup * pageGroupSize + 1;
+  const pageEnd = Math.min(pageStart + pageGroupSize - 1, totalPages);
+
+  // 페이지 번호 배열 생성
+  const pageNumbers = [];
+  for (let i = pageStart; i <= pageEnd; i++) {
+    pageNumbers.push(i);
+  }
+
   // 페이지 변경 핸들러
   const handlePageChange = (newPage) => {
     if (newPage > 0 && newPage <= totalPages) {
@@ -93,12 +105,18 @@ const ManageSongsModal = ({ songs, onClose, onDeleteSong, onUpdateSong }) => {
             {/* 노래 목록 테이블 */}
             <div className="table-container">
               <table className="songs-table">
+                <colgroup>
+                  <col style={{ width: "40%" }} />
+                  <col style={{ width: "30%" }} />
+                  <col style={{ width: "15%" }} />
+                  <col style={{ width: "15%" }} />
+                </colgroup>
                 <thead>
                   <tr>
                     <th>노래 제목</th>
                     <th>가수</th>
                     <th>장르</th>
-                    <th>관리</th>
+                    <th className="text-center">관리</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -114,7 +132,7 @@ const ManageSongsModal = ({ songs, onClose, onDeleteSong, onUpdateSong }) => {
                         key={song.id}
                         className={index % 2 === 0 ? "even" : "odd"}
                       >
-                        <td>{song.title}</td>
+                        <td className="song-title">{song.title}</td>
                         <td>{song.artist}</td>
                         <td>
                           <span className="badge genre-badge">
@@ -151,35 +169,62 @@ const ManageSongsModal = ({ songs, onClose, onDeleteSong, onUpdateSong }) => {
               <div className="pagination">
                 <button
                   className="pagination-btn"
-                  onClick={() => handlePageChange(currentPage - 1)}
                   disabled={currentPage === 1}
+                  onClick={() => handlePageChange(1)}
                 >
-                  ◀
+                  처음
                 </button>
-
-                {Array.from({ length: totalPages }, (_, i) => i + 1).map(
-                  (page) => (
-                    <button
-                      key={page}
-                      className={`pagination-btn ${
-                        currentPage === page ? "active" : ""
-                      }`}
-                      onClick={() => handlePageChange(page)}
-                    >
-                      {page}
-                    </button>
-                  )
-                )}
 
                 <button
                   className="pagination-btn"
-                  onClick={() => handlePageChange(currentPage + 1)}
-                  disabled={currentPage === totalPages}
+                  disabled={currentPage === 1}
+                  onClick={() => handlePageChange(currentPage - 1)}
                 >
-                  ▶
+                  이전
+                </button>
+
+                <div className="pagination-numbers">
+                  {pageNumbers.map((number) => (
+                    <button
+                      key={number}
+                      className={`pagination-number ${
+                        number === currentPage ? "active" : ""
+                      }`}
+                      onClick={() => handlePageChange(number)}
+                    >
+                      {number}
+                    </button>
+                  ))}
+                </div>
+
+                <button
+                  className="pagination-btn"
+                  disabled={currentPage === totalPages}
+                  onClick={() => handlePageChange(currentPage + 1)}
+                >
+                  다음
+                </button>
+
+                <button
+                  className="pagination-btn"
+                  disabled={currentPage === totalPages}
+                  onClick={() => handlePageChange(totalPages)}
+                >
+                  마지막
                 </button>
               </div>
             )}
+
+            {/* 페이지 정보 */}
+            <div className="page-info">
+              {totalPages > 0 && (
+                <span>
+                  총 {filteredSongs.length}곡 중 {indexOfFirstSong + 1}-
+                  {Math.min(indexOfLastSong, filteredSongs.length)}곡 표시
+                  (페이지 {currentPage}/{totalPages})
+                </span>
+              )}
+            </div>
 
             <div className="modal-footer">
               <button className="btn btn-secondary" onClick={onClose}>

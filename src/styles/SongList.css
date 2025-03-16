@@ -22,20 +22,20 @@
 }
 
 .empty-icon {
-  font-size: 84px;
+  font-size: 64px;
   color: #adb5bd;
   margin-bottom: 20px;
 }
 
 .empty-text {
-  font-size: 30px;
+  font-size: 24px;
   font-weight: bold;
   color: #495057;
   margin-bottom: 10px;
 }
 
 .empty-subtext {
-  font-size: 20px;
+  font-size: 16px;
   color: #6c757d;
 }
 
@@ -57,7 +57,7 @@
   background: none;
   border: none;
   color: #4a6fa5;
-  font-size: 20px;
+  font-size: 16px;
   cursor: pointer;
   padding: 5px 12px;
   margin: 0 4px;
@@ -92,7 +92,7 @@
   background: none;
   border: none;
   border-radius: 50%;
-  font-size: 20px;
+  font-size: 16px;
   cursor: pointer;
   color: #495057;
   transition: all 0.2s;
@@ -111,7 +111,7 @@
 .page-info {
   text-align: center;
   color: #6c757d;
-  font-size: 20px;
+  font-size: 16px;
   margin-bottom: 20px;
   display: flex;
   justify-content: center;
@@ -132,7 +132,7 @@
   }
 
   .pagination-btn {
-    font-size: 18px;
+    font-size: 16px;
     padding: 5px 8px;
     min-width: 50px;
     margin: 0 2px;
@@ -141,11 +141,11 @@
   .pagination-number {
     width: 28px;
     height: 28px;
-    font-size: 18px;
+    font-size: 16px;
   }
 
   .page-info {
-    font-size: 18px;
+    font-size: 16px;
   }
 }
 

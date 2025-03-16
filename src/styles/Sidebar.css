@@ -11,7 +11,7 @@
 }
 
 .menu-section-title {
-  font-size: 18px;
+  font-size: 16px;
   font-weight: bold;
   color: #6c757d;
   text-transform: uppercase;
@@ -38,7 +38,7 @@
   border: none;
   border-radius: 8px;
   cursor: pointer;
-  font-size: 20px;
+  font-size: 16px;
   text-align: left;
   color: #495057;
   transition: background-color 0.2s;
@@ -125,7 +125,7 @@
   border: none;
   padding: 8px 15px 8px 45px; /* 좌측 패딩으로 들여쓰기 효과 */
   text-align: left;
-  font-size: 20px;
+  font-size: 16px;
   color: #495057;
   cursor: pointer;
   transition: background-color 0.2s, color 0.2s;
