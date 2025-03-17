@@ -6,16 +6,19 @@ const Sidebar = ({
   activeMenu,
   selectedGenre: propSelectedGenre,
   selectedArtist: propSelectedArtist,
+  selectedDifficulty: propSelectedDifficulty,
   onMenuChange,
   onAddSong,
   onManageSongs,
   onGenreSelect,
   onArtistSelect,
-  onUserManagement
+  onDifficultySelect,
+  onUserManagement,
 }) => {
   // 드롭다운 상태 관리
   const [genreDropdownOpen, setGenreDropdownOpen] = useState(false);
   const [artistDropdownOpen, setArtistDropdownOpen] = useState(false);
+  const [difficultyDropdownOpen, setDifficultyDropdownOpen] = useState(false);
 
   // 선택된 장르와 가수 상태 관리 (props에서 받은 값을 기본값으로 사용)
   const [selectedGenre, setSelectedGenre] = useState(
@@ -24,10 +27,14 @@ const Sidebar = ({
   const [selectedArtist, setSelectedArtist] = useState(
     propSelectedArtist || "방탄소년단"
   );
+  const [selectedDifficulty, setSelectedDifficulty] = useState(
+    propSelectedDifficulty || "쉬움"
+  );
 
   // 드롭다운 아이템이 선택되었는지 확인
   const [hasGenreSelection, setHasGenreSelection] = useState(false);
   const [hasArtistSelection, setHasArtistSelection] = useState(false);
+  const [hasDifficultySelection, setHasDifficultySelection] = useState(false);
 
   // props가 변경될 때 내부 상태 업데이트
   useEffect(() => {
@@ -44,20 +51,39 @@ const Sidebar = ({
     }
   }, [propSelectedArtist, activeMenu]);
 
+  useEffect(() => {
+    if (propSelectedDifficulty) {
+      setSelectedDifficulty(propSelectedDifficulty);
+      setHasDifficultySelection(activeMenu === "byDifficulty");
+    }
+  }, [propSelectedDifficulty, activeMenu]);
+
   // activeMenu 변경 감지하여 드롭다운 상태 업데이트
   useEffect(() => {
-    // 메뉴가 장르/가수 관련이 아니면 드롭다운을 닫고 선택 상태 초기화
-    if (activeMenu !== "byGenre" && activeMenu !== "byArtist") {
+    // 메뉴가 장르/가수/난이도 관련이 아니면 드롭다운을 닫고 선택 상태 초기화
+    if (
+      activeMenu !== "byGenre" &&
+      activeMenu !== "byArtist" &&
+      activeMenu !== "byDifficulty"
+    ) {
       setGenreDropdownOpen(false);
       setArtistDropdownOpen(false);
+      setDifficultyDropdownOpen(false);
       setHasGenreSelection(false);
       setHasArtistSelection(false);
+      setHasDifficultySelection(false);
     } else if (activeMenu === "byGenre") {
       setHasGenreSelection(true);
       setHasArtistSelection(false);
+      setHasDifficultySelection(false);
     } else if (activeMenu === "byArtist") {
       setHasArtistSelection(true);
       setHasGenreSelection(false);
+      setHasDifficultySelection(false);
+    } else if (activeMenu === "byDifficulty") {
+      setHasDifficultySelection(true);
+      setHasGenreSelection(false);
+      setHasArtistSelection(false);
     }
   }, [activeMenu]);
 
@@ -89,12 +115,16 @@ const Sidebar = ({
     "이무진",
   ];
 
+  // 난이도 목록
+  const difficulties = ["쉬움", "보통", "어려움"];
+
   // 장르 선택 핸들러
   const handleGenreSelect = (genre) => {
     setSelectedGenre(genre);
     onGenreSelect(genre);
     setHasGenreSelection(true);
     setHasArtistSelection(false);
+    setHasDifficultySelection(false);
   };
 
   // 가수 선택 핸들러
@@ -103,14 +133,25 @@ const Sidebar = ({
     onArtistSelect(artist);
     setHasArtistSelection(true);
     setHasGenreSelection(false);
+    setHasDifficultySelection(false);
+  };
+
+  // 난이도 선택 핸들러
+  const handleDifficultySelect = (difficulty) => {
+    setSelectedDifficulty(difficulty);
+    onDifficultySelect(difficulty);
+    setHasDifficultySelection(true);
+    setHasGenreSelection(false);
+    setHasArtistSelection(false);
   };
 
   // 다른 메뉴 선택 핸들러
   const handleMenuChange = (menu) => {
     // 다른 메뉴 선택 시 드롭다운 선택 상태 초기화
-    if (menu !== "byGenre" && menu !== "byArtist") {
+    if (menu !== "byGenre" && menu !== "byArtist" && menu !== "byDifficulty") {
       setHasGenreSelection(false);
       setHasArtistSelection(false);
+      setHasDifficultySelection(false);
     }
     onMenuChange(menu);
   };
@@ -121,6 +162,7 @@ const Sidebar = ({
     setGenreDropdownOpen(!genreDropdownOpen);
     // 다른 드롭다운이 열려있으면 닫기
     if (artistDropdownOpen) setArtistDropdownOpen(false);
+    if (difficultyDropdownOpen) setDifficultyDropdownOpen(false);
   };
 
   // 가수 드롭다운 토글 (메뉴 변경 없이 단순 토글)
@@ -129,11 +171,21 @@ const Sidebar = ({
     setArtistDropdownOpen(!artistDropdownOpen);
     // 다른 드롭다운이 열려있으면 닫기
     if (genreDropdownOpen) setGenreDropdownOpen(false);
+    if (difficultyDropdownOpen) setDifficultyDropdownOpen(false);
+  };
+
+  // 난이도 드롭다운 토글 (메뉴 변경 없이 단순 토글)
+  const toggleDifficultyDropdown = (e) => {
+    e.preventDefault(); // 기본 동작 방지
+    setDifficultyDropdownOpen(!difficultyDropdownOpen);
+    // 다른 드롭다운이 열려있으면 닫기
+    if (genreDropdownOpen) setGenreDropdownOpen(false);
+    if (artistDropdownOpen) setArtistDropdownOpen(false);
   };
 
   // 외부 링크 열기 함수
   const openExternalLink = (url) => {
-    window.open(url, '_blank', 'noopener,noreferrer');
+    window.open(url, "_blank", "noopener,noreferrer");
   };
 
   return (
@@ -143,7 +195,10 @@ const Sidebar = ({
         <ul className="menu-list">
           <li
             className={`menu-item ${
-              activeMenu === "allSongs" && !hasGenreSelection && !hasArtistSelection
+              activeMenu === "allSongs" &&
+              !hasGenreSelection &&
+              !hasArtistSelection &&
+              !hasDifficultySelection
                 ? "active"
                 : ""
             }`}
@@ -160,7 +215,9 @@ const Sidebar = ({
           <li
             className={`menu-item ${
               hasGenreSelection ? "has-dropdown-active" : ""
-            } ${activeMenu === "byGenre" && !hasGenreSelection ? "active" : ""}`}
+            } ${
+              activeMenu === "byGenre" && !hasGenreSelection ? "active" : ""
+            }`}
           >
             <button onClick={toggleGenreDropdown} className="dropdown-toggle">
               <svg className="menu-icon" viewBox="0 0 24 24">
@@ -181,7 +238,9 @@ const Sidebar = ({
                 <button
                   key={genre}
                   className={`dropdown-item ${
-                    hasGenreSelection && selectedGenre === genre ? "selected" : ""
+                    hasGenreSelection && selectedGenre === genre
+                      ? "selected"
+                      : ""
                   }`}
                   onClick={() => handleGenreSelect(genre)}
                 >
@@ -195,7 +254,9 @@ const Sidebar = ({
           <li
             className={`menu-item ${
               hasArtistSelection ? "has-dropdown-active" : ""
-            } ${activeMenu === "byArtist" && !hasArtistSelection ? "active" : ""}`}
+            } ${
+              activeMenu === "byArtist" && !hasArtistSelection ? "active" : ""
+            }`}
           >
             <button onClick={toggleArtistDropdown} className="dropdown-toggle">
               <svg className="menu-icon" viewBox="0 0 24 24">
@@ -218,7 +279,9 @@ const Sidebar = ({
                 <button
                   key={artist}
                   className={`dropdown-item ${
-                    hasArtistSelection && selectedArtist === artist ? "selected" : ""
+                    hasArtistSelection && selectedArtist === artist
+                      ? "selected"
+                      : ""
                   }`}
                   onClick={() => handleArtistSelect(artist)}
                 >
@@ -230,22 +293,59 @@ const Sidebar = ({
 
           <li
             className={`menu-item ${
-              activeMenu === "byDifficulty" && !hasGenreSelection && !hasArtistSelection
+              hasDifficultySelection ? "has-dropdown-active" : ""
+            } ${
+              activeMenu === "byDifficulty" && !hasDifficultySelection
                 ? "active"
                 : ""
             }`}
           >
-            <button onClick={() => handleMenuChange("byDifficulty")}>
+            <button
+              onClick={toggleDifficultyDropdown}
+              className="dropdown-toggle"
+            >
               <svg className="menu-icon" viewBox="0 0 24 24">
                 <path d="M13 10V3L4 14h7v7l9-11h-7z" />
               </svg>
               <span>난이도별 보기</span>
+              <svg
+                className={`dropdown-arrow ${
+                  difficultyDropdownOpen ? "open" : ""
+                }`}
+                viewBox="0 0 24 24"
+              >
+                <path d="M19 9l-7 7-7-7" />
+              </svg>
             </button>
+
+            {/* 난이도 드롭다운 메뉴 */}
+            <div
+              className={`dropdown-menu ${
+                difficultyDropdownOpen ? "open" : ""
+              }`}
+            >
+              {difficulties.map((difficulty) => (
+                <button
+                  key={difficulty}
+                  className={`dropdown-item ${
+                    hasDifficultySelection && selectedDifficulty === difficulty
+                      ? "selected"
+                      : ""
+                  }`}
+                  onClick={() => handleDifficultySelect(difficulty)}
+                >
+                  {difficulty}
+                </button>
+              ))}
+            </div>
           </li>
 
           <li
             className={`menu-item ${
-              activeMenu === "favorites" && !hasGenreSelection && !hasArtistSelection
+              activeMenu === "favorites" &&
+              !hasGenreSelection &&
+              !hasArtistSelection &&
+              !hasDifficultySelection
                 ? "active"
                 : ""
             }`}
@@ -294,10 +394,10 @@ const Sidebar = ({
           </ul>
         </div>
       )}
-      
+
       {/* 외부 링크 버튼 영역 */}
       <div className="sidebar-link">
-        <button 
+        <button
           className="youtube-button"
           onClick={() => openExternalLink("https://www.youtube.com/@chebi333")}
         >
@@ -309,7 +409,7 @@ const Sidebar = ({
           </svg>
           유튜브
         </button>
-        <button 
+        <button
           className="soop-button"
           onClick={() => openExternalLink("https://ch.sooplive.co.kr/chebi2")}
         >

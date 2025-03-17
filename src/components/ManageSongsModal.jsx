@@ -22,18 +22,6 @@ const ManageSongsModal = ({ songs, onClose, onDeleteSong, onUpdateSong }) => {
   const currentSongs = filteredSongs.slice(indexOfFirstSong, indexOfLastSong);
   const totalPages = Math.ceil(filteredSongs.length / songsPerPage);
 
-  // 페이지 그룹 계산 (한 번에 5개의 페이지 버튼만 표시)
-  const pageGroupSize = 5;
-  const currentGroup = Math.floor((currentPage - 1) / pageGroupSize);
-  const pageStart = currentGroup * pageGroupSize + 1;
-  const pageEnd = Math.min(pageStart + pageGroupSize - 1, totalPages);
-
-  // 페이지 번호 배열 생성
-  const pageNumbers = [];
-  for (let i = pageStart; i <= pageEnd; i++) {
-    pageNumbers.push(i);
-  }
-
   // 페이지 변경 핸들러
   const handlePageChange = (newPage) => {
     if (newPage > 0 && newPage <= totalPages) {
@@ -105,18 +93,12 @@ const ManageSongsModal = ({ songs, onClose, onDeleteSong, onUpdateSong }) => {
             {/* 노래 목록 테이블 */}
             <div className="table-container">
               <table className="songs-table">
-                <colgroup>
-                  <col style={{ width: "40%" }} />
-                  <col style={{ width: "30%" }} />
-                  <col style={{ width: "15%" }} />
-                  <col style={{ width: "15%" }} />
-                </colgroup>
                 <thead>
                   <tr>
                     <th>노래 제목</th>
                     <th>가수</th>
                     <th>장르</th>
-                    <th className="text-center">관리</th>
+                    <th>관리</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -132,7 +114,7 @@ const ManageSongsModal = ({ songs, onClose, onDeleteSong, onUpdateSong }) => {
                         key={song.id}
                         className={index % 2 === 0 ? "even" : "odd"}
                       >
-                        <td className="song-title">{song.title}</td>
+                        <td>{song.title}</td>
                         <td>{song.artist}</td>
                         <td>
                           <span className="badge genre-badge">
@@ -146,14 +128,38 @@ const ManageSongsModal = ({ songs, onClose, onDeleteSong, onUpdateSong }) => {
                               onClick={() => handleEdit(song)}
                               aria-label="노래 편집"
                             >
-                              ✎
+                              <span
+                                style={{
+                                  display: "flex",
+                                  alignItems: "center",
+                                  justifyContent: "center",
+                                  fontSize: "22px",
+                                  color: "white",
+                                  textShadow: "0 1px 3px rgba(0, 0, 0, 0.5)",
+                                  fontWeight: "bold",
+                                }}
+                              >
+                                ✎
+                              </span>
                             </button>
                             <button
                               className="action-btn delete-btn"
                               onClick={() => handleDelete(song.id)}
                               aria-label="노래 삭제"
                             >
-                              ×
+                              <span
+                                style={{
+                                  display: "flex",
+                                  alignItems: "center",
+                                  justifyContent: "center",
+                                  fontSize: "22px",
+                                  color: "white",
+                                  textShadow: "0 1px 3px rgba(0, 0, 0, 0.5)",
+                                  fontWeight: "bold",
+                                }}
+                              >
+                                ✕
+                              </span>
                             </button>
                           </div>
                         </td>
@@ -184,17 +190,25 @@ const ManageSongsModal = ({ songs, onClose, onDeleteSong, onUpdateSong }) => {
                 </button>
 
                 <div className="pagination-numbers">
-                  {pageNumbers.map((number) => (
-                    <button
-                      key={number}
-                      className={`pagination-number ${
-                        number === currentPage ? "active" : ""
-                      }`}
-                      onClick={() => handlePageChange(number)}
-                    >
-                      {number}
-                    </button>
-                  ))}
+                  {Array.from({ length: totalPages }, (_, i) => i + 1)
+                    .filter((page) => {
+                      // 현재 페이지 주변 2페이지만 표시
+                      const pageGroup = Math.floor((currentPage - 1) / 5);
+                      const pageStart = pageGroup * 5 + 1;
+                      const pageEnd = Math.min(pageStart + 4, totalPages);
+                      return page >= pageStart && page <= pageEnd;
+                    })
+                    .map((page) => (
+                      <button
+                        key={page}
+                        className={`pagination-number ${
+                          currentPage === page ? "active" : ""
+                        }`}
+                        onClick={() => handlePageChange(page)}
+                      >
+                        {page}
+                      </button>
+                    ))}
                 </div>
 
                 <button
@@ -216,15 +230,15 @@ const ManageSongsModal = ({ songs, onClose, onDeleteSong, onUpdateSong }) => {
             )}
 
             {/* 페이지 정보 */}
-            <div className="page-info">
-              {totalPages > 0 && (
+            {totalPages > 0 && (
+              <div className="page-info">
                 <span>
                   총 {filteredSongs.length}곡 중 {indexOfFirstSong + 1}-
                   {Math.min(indexOfLastSong, filteredSongs.length)}곡 표시
                   (페이지 {currentPage}/{totalPages})
                 </span>
-              )}
-            </div>
+              </div>
+            )}
 
             <div className="modal-footer">
               <button className="btn btn-secondary" onClick={onClose}>

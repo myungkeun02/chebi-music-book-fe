@@ -5,7 +5,7 @@
 }
 
 body {
-  background-color: #f8f9fa;
+  background-color: #ffffff;
   color: #495057;
 }
 
@@ -94,8 +94,8 @@ body {
   gap: 20px;
 }
 
-/* 공통 카드 스타일 */
-.card {
+/* 공통 카드 스타일 - song-card 클래스에는 적용되지 않도록 수정 */
+.card:not(.song-card) {
   background-color: white;
   border-radius: 12px;
   overflow: hidden;
@@ -104,7 +104,7 @@ body {
   transition: transform 0.2s, box-shadow 0.2s;
 }
 
-.card:hover {
+.card:not(.song-card):hover {
   transform: translateY(-4px);
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
 }
@@ -114,7 +114,7 @@ body {
   display: inline-block;
   padding: 4px 8px;
   border-radius: 12px;
-  font-size: 15px;
+  font-size: 13px;
   font-weight: 500;
   background-color: #e0e7f0;
   color: #4a6fa5;
@@ -145,6 +145,18 @@ body {
   align-items: center;
   justify-content: center;
   z-index: 1000;
+  pointer-events: auto;
+}
+
+/* 모달 배경이 SongCard 그림자에 영향을 주지 않도록 설정 */
+.modal-backdrop::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: -1;
 }
 
 /* 애니메이션 */
@@ -174,4 +186,14 @@ body {
 
 .slide-in-up {
   animation: slideInUp 0.3s ease forwards;
+}
+
+/* SongCard 그림자 항상 보이게 설정 */
+.song-card {
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12) !important;
+}
+
+.song-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.15) !important;
 }

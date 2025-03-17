@@ -28,7 +28,7 @@
 .content {
   flex: 1;
   padding: 20px;
-  background-color: #f8f9fa;
+  background-color: #ffffff;
   overflow-y: auto;
   height: calc(100vh - 70px); /* 헤더 높이를 뺀 나머지 높이 */
 }
@@ -42,4 +42,17 @@
 
 .content-header .section-title {
   margin-bottom: 0;
+}
+
+/* 노래 카드 그림자 항상 보이게 설정 */
+.song-card {
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12) !important;
+  z-index: 2 !important;
+  position: relative !important;
+  will-change: transform, box-shadow !important;
+  isolation: isolate !important;
+}
+
+.song-card:hover {
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.15) !important;
 }

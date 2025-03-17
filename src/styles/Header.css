@@ -3,13 +3,15 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 20px;
+  padding: 0 24px;
   height: 70px;
   background-color: #4a6fa5;
+  background-image: linear-gradient(to right, #4a6fa5, #5a7db5);
   color: white;
   width: 100%; /* 전체 너비 차지 */
   position: relative; /* 필요에 따라 fixed로 변경 가능 */
   z-index: 10; /* 다른 요소 위에 표시 */
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
 .header-logo {
@@ -26,6 +28,7 @@
   align-items: center;
   justify-content: center;
   overflow: hidden;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .logo-circle img {
@@ -35,35 +38,44 @@
 }
 
 .logo-text {
-  margin-left: 10px;
-  font-size: 17px;
-  font-weight: bold;
+  margin-left: 12px;
+  font-size: 18px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
 }
 
 .search-form {
   flex: 1;
   display: flex;
   max-width: 500px;
-  margin: 0 20px;
+  margin: 24px 24px;
 }
 
 .search-input {
   width: 100%;
-  padding: 8px 15px;
-  border-radius: 18px 0px 0px 18px;
+  padding: 10px 16px;
+  border-radius: 20px 0px 0px 20px;
   border: none;
-  font-size: 17px;
+  font-size: 16px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
 }
 
 .search-button {
   background-color: white;
-  width: 60px;
+  width: 70px;
   border: none;
-  border-radius: 0px 18px 18px 0px;
-  padding: 5px 8px;
+  border-radius: 0px 20px 20px 0px;
+  padding: 10px 12px;
   color: #4a6fa5;
-  font-size: 17px;
+  font-size: 16px;
+  font-weight: 500;
   cursor: pointer;
+  transition: all 0.2s;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.search-button:hover {
+  background-color: #f8f9fa;
 }
 
 .search-input:focus {
@@ -77,24 +89,51 @@
 }
 
 .user-greeting {
-  margin-right: 15px;
-  font-size: 17px;
+  margin-right: 16px;
+  font-size: 16px;
+  font-weight: 500;
 }
 
-.btn-outline {
-  background-color: transparent;
-  border: 1px solid white;
+.btn {
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-size: 15px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+  border: none;
+}
+
+.btn-primary {
+  background-color: white;
+  color: #4a6fa5;
+}
+
+.btn-primary:hover {
+  background-color: #f8f9fa;
+  transform: translateY(-1px);
+}
+
+.btn-secondary {
+  background-color: rgba(255, 255, 255, 0.2);
   color: white;
-  margin-right: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
 }
 
-.btn-outline:hover {
-  background-color: rgba(255, 255, 255, 0.1);
+.btn-secondary:hover {
+  background-color: rgba(255, 255, 255, 0.3);
+  transform: translateY(-1px);
+}
+
+.login-btn,
+.logout-btn {
+  margin-right: 12px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .user-avatar {
-  width: 36px;
-  height: 36px;
+  width: 38px;
+  height: 38px;
   border-radius: 50%;
   background-color: white;
   color: #4a6fa5;
@@ -102,5 +141,48 @@
   align-items: center;
   justify-content: center;
   font-weight: bold;
-  margin-left: 15px;
+  font-size: 16px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: all 0.2s;
+}
+
+.user-avatar:hover {
+  transform: scale(1.05);
+}
+
+/* 반응형 디자인 */
+@media (max-width: 768px) {
+  .header {
+    padding: 0 16px;
+    height: 60px;
+  }
+
+  .logo-text {
+    font-size: 16px;
+  }
+
+  .search-form {
+    max-width: 300px;
+    margin: 0 12px;
+  }
+
+  .search-input {
+    padding: 8px 12px;
+    font-size: 15px;
+  }
+
+  .search-button {
+    width: 60px;
+    padding: 8px;
+    font-size: 15px;
+  }
+
+  .user-greeting {
+    display: none;
+  }
+
+  .btn {
+    padding: 6px 12px;
+    font-size: 14px;
+  }
 }

@@ -1,7 +1,14 @@
 import React, { useState, useEffect } from "react";
 import "../styles/Header.css";
 
-const Header = ({ isLoggedIn, isAdmin, onSearch, searchQuery: propSearchQuery, onLogin, onLogout }) => {
+const Header = ({
+  isLoggedIn,
+  isAdmin,
+  onSearch,
+  searchQuery: propSearchQuery,
+  onLogin,
+  onLogout,
+}) => {
   const [searchQuery, setSearchQuery] = useState(propSearchQuery || "");
 
   // 부모 컴포넌트의 검색어 상태 변화에 따라 로컬 상태 동기화
@@ -52,7 +59,7 @@ const Header = ({ isLoggedIn, isAdmin, onSearch, searchQuery: propSearchQuery, o
           </button>
         )}
 
-        <div className="user-avatar">
+        <div className="user-avatar" title={isAdmin ? "관리자" : "사용자"}>
           <span>{isAdmin ? "A" : "U"}</span>
         </div>
       </div>

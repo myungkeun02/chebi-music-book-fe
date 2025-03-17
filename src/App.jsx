@@ -34,6 +34,7 @@ const App = () => {
   const [activeMenu, setActiveMenu] = useState("allSongs");
   const [selectedGenre, setSelectedGenre] = useState("K-POP");
   const [selectedArtist, setSelectedArtist] = useState("방탄소년단");
+  const [selectedDifficulty, setSelectedDifficulty] = useState("쉬움");
 
   // 검색 상태
   const [searchQuery, setSearchQuery] = useState("");
@@ -268,7 +269,7 @@ const App = () => {
     } else if (activeMenu === "byArtist") {
       result = result.filter((song) => song.artist === selectedArtist);
     } else if (activeMenu === "byDifficulty") {
-      result = result.filter((song) => song.difficulty === "쉬움");
+      result = result.filter((song) => song.difficulty === selectedDifficulty);
     } else if (activeMenu === "favorites") {
       // 자주 부르는 노래 기능 (예시로 첫 12개 항목)
       result = result.slice(0, 12);
@@ -295,6 +296,16 @@ const App = () => {
     }
     setSelectedArtist(artist);
     setActiveMenu("byArtist");
+  };
+
+  // 난이도 선택 핸들러
+  const handleDifficultySelect = (difficulty) => {
+    // 난이도 선택 시 검색어 초기화
+    if (searchQuery) {
+      setSearchQuery("");
+    }
+    setSelectedDifficulty(difficulty);
+    setActiveMenu("byDifficulty");
   };
 
   // 새 노래 추가 핸들러
@@ -360,7 +371,7 @@ const App = () => {
       case "byArtist":
         return `가수별 노래: ${selectedArtist}`;
       case "byDifficulty":
-        return "난이도별 노래: 쉬움";
+        return `난이도별 노래: ${selectedDifficulty}`;
       case "favorites":
         return "자주 부르는 노래";
       default:
@@ -387,11 +398,13 @@ const App = () => {
           activeMenu={activeMenu}
           selectedGenre={selectedGenre}
           selectedArtist={selectedArtist}
+          selectedDifficulty={selectedDifficulty}
           onMenuChange={handleMenuChange}
           onAddSong={() => setShowAddModal(true)}
           onManageSongs={() => setShowManageModal(true)}
           onGenreSelect={handleGenreSelect}
           onArtistSelect={handleArtistSelect}
+          onDifficultySelect={handleDifficultySelect}
           onUserManagement={handleUserManagement}
         />
 
