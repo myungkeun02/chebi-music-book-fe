@@ -25,6 +25,7 @@ const Header = ({
     <header className="header">
       <div className="header-left">
         <img src="/images/logo.png" alt="Chebi Music Book" className="logo" />
+        <h1 className="logo-text">MUSIC BOOK</h1>
       </div>
 
       <form className="search-form" onSubmit={handleSearch}>
