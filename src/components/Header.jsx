@@ -23,11 +23,8 @@ const Header = ({
 
   return (
     <header className="header">
-      <div className="header-logo">
-        <div className="logo-circle">
-          <img src="/src/assets/image.png" alt="노래책 로고" />
-        </div>
-        <h1 className="logo-text">MUSIC-BOOK</h1>
+      <div className="header-left">
+        <img src="/images/logo.png" alt="Chebi Music Book" className="logo" />
       </div>
 
       <form className="search-form" onSubmit={handleSearch}>
