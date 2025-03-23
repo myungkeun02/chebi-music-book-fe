@@ -59,7 +59,7 @@ const Header = ({
           </button>
         )}
 
-        <div className="user-avatar" title={isAdmin ? "관리자" : "사용자"}>
+        <div className="user-avatar">
           <span>{isAdmin ? "A" : "U"}</span>
         </div>
       </div>

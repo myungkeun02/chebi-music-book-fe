@@ -10,6 +10,8 @@ const EditSongModal = ({ song, onClose, onUpdateSong }) => {
   const [albumSearch, setAlbumSearch] = useState("");
   const [searchResults, setSearchResults] = useState([]);
   const [isSearching, setIsSearching] = useState(false);
+  const [youtubeLink, setYoutubeLink] = useState("");
+  const [africaLink, setAfricaLink] = useState("");
 
   // 장르 옵션
   const genreOptions = [
@@ -36,6 +38,8 @@ const EditSongModal = ({ song, onClose, onUpdateSong }) => {
       setGenre(song.genre || "K-POP");
       setDifficulty(song.difficulty || "보통");
       setCoverImage(song.coverImage || null);
+      setYoutubeLink(song.youtubeLink || "");
+      setAfricaLink(song.africaLink || "");
     }
   }, [song]);
 
@@ -98,25 +102,19 @@ const EditSongModal = ({ song, onClose, onUpdateSong }) => {
   };
 
   // 노래 수정 제출
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-
-    // 간단한 유효성 검사
-    if (!title || !artist) {
-      alert("노래 제목과 가수는 필수입니다.");
-      return;
-    }
-
-    // 노래 업데이트
-    onUpdateSong({
+    const updatedSong = {
       ...song,
       title,
       artist,
       genre,
       difficulty,
       coverImage,
-    });
-
+      youtubeLink,
+      africaLink,
+    };
+    onUpdateSong(updatedSong);
     onClose();
   };
 
@@ -198,6 +196,35 @@ const EditSongModal = ({ song, onClose, onUpdateSong }) => {
                   ))}
                 </select>
               </div>
+            </div>
+
+            <h3 className="section-subtitle">링크 정보</h3>
+            <div className="form-group">
+              <label htmlFor="youtubeLink" className="form-label">
+                유튜브 링크
+              </label>
+              <input
+                type="url"
+                id="youtubeLink"
+                className="form-control"
+                value={youtubeLink}
+                onChange={(e) => setYoutubeLink(e.target.value)}
+                placeholder="https://youtube.com/watch?v=..."
+              />
+            </div>
+
+            <div className="form-group">
+              <label htmlFor="africaLink" className="form-label">
+                아프리카TV 링크
+              </label>
+              <input
+                type="url"
+                id="africaLink"
+                className="form-control"
+                value={africaLink}
+                onChange={(e) => setAfricaLink(e.target.value)}
+                placeholder="https://afreecatv.com/..."
+              />
             </div>
 
             <h3 className="section-subtitle">앨범 커버 검색</h3>

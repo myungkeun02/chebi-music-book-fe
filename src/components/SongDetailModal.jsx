@@ -108,47 +108,38 @@ const SongDetailModal = ({ song, onClose }) => {
                       fill="currentColor"
                     />
                   </svg>
-                  {copySuccess ? "복사 완료!" : "노래 제목 + 가수 복사"}
+                  {copySuccess ? "복사됨!" : "노래 제목 복사"}
                 </button>
 
-                {/* 유튜브 링크 버튼 */}
-                <button
-                  className="detail-btn youtube-btn"
-                  onClick={() =>
-                    openExternalLink(
-                      song.youtubeLink ||
-                        `https://www.youtube.com/results?search_query=${encodeURIComponent(
-                          `${song.title} ${song.artist}`
-                        )}`
-                    )
-                  }
-                >
-                  <svg viewBox="0 0 24 24" width="18" height="18">
-                    <path
-                      d="M10 15l5.19-3L10 9v6m11.56-7.83c.13.47.22 1.1.28 1.9.07.8.1 1.49.1 2.09L22 12c0 2.19-.16 3.8-.44 4.83-.25.9-.83 1.48-1.73 1.73-.47.13-1.33.22-2.65.28-1.3.07-2.49.1-3.59.1L12 19c-4.19 0-6.8-.16-7.83-.44-.9-.25-1.48-.83-1.73-1.73-.13-.47-.22-1.1-.28-1.9-.07-.8-.1-1.49-.1-2.09L2 12c0-2.19.16-3.8.44-4.83.25-.9.83-1.48 1.73-1.73.47-.13 1.33-.22 2.65-.28 1.3-.07 2.49-.1 3.59-.1L12 5c4.19 0 6.8.16 7.83.44.9.25 1.48.83 1.73 1.73z"
-                      fill="currentColor"
-                    />
-                  </svg>
-                  유튜브에서 보기
-                </button>
+                {song.youtubeLink && (
+                  <button
+                    className="detail-btn youtube-btn"
+                    onClick={() => openExternalLink(song.youtubeLink)}
+                  >
+                    <svg viewBox="0 0 24 24" width="18" height="18">
+                      <path
+                        d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z"
+                        fill="currentColor"
+                      />
+                    </svg>
+                    유튜브에서 보기
+                  </button>
+                )}
 
-                {/* SOOP 링크 버튼 */}
-                <button
-                  className="detail-btn soop-btn"
-                  onClick={() =>
-                    openExternalLink(
-                      song.soopLink || `https://example.com/soop/${song.id}`
-                    )
-                  }
-                >
-                  <svg viewBox="0 0 24 24" width="18" height="18">
-                    <path
-                      d="M9.5 3L8 4.5 11.5 8 8 11.5 9.5 13 14.5 8 9.5 3zm5 0L13 4.5 16.5 8 13 11.5 14.5 13 19.5 8 14.5 3z"
-                      fill="currentColor"
-                    />
-                  </svg>
-                  SOOP 플랫폼에서 보기
-                </button>
+                {song.africaLink && (
+                  <button
+                    className="detail-btn soop-btn"
+                    onClick={() => openExternalLink(song.africaLink)}
+                  >
+                    <svg viewBox="0 0 24 24" width="18" height="18">
+                      <path
+                        d="M9.5 3L8 4.5 11.5 8 8 11.5 9.5 13 14.5 8 9.5 3zm5 0L13 4.5 16.5 8 13 11.5 14.5 13 19.5 8 14.5 3z"
+                        fill="currentColor"
+                      />
+                    </svg>
+                    아프리카TV에서 보기
+                  </button>
+                )}
               </div>
             </div>
           </div>

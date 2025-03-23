@@ -10,6 +10,8 @@ const AddSongModal = ({ onClose, onAddSong }) => {
   const [albumSearch, setAlbumSearch] = useState("");
   const [searchResults, setSearchResults] = useState([]);
   const [isSearching, setIsSearching] = useState(false);
+  const [youtubeLink, setYoutubeLink] = useState("");
+  const [africaLink, setAfricaLink] = useState("");
 
   // 장르 옵션
   const genreOptions = [
@@ -28,85 +30,74 @@ const AddSongModal = ({ onClose, onAddSong }) => {
   // 난이도 옵션
   const difficultyOptions = ["쉬움", "보통", "어려움"];
 
-  // 앨범 커버 검색 시뮬레이션
-  const handleSearchAlbum = (e) => {
+  // 앨범 커버 검색 API 호출
+  const handleSearchAlbum = async (e) => {
     e.preventDefault();
 
-    // 실제로는 백엔드 API 호출
+    if (!albumSearch.trim()) {
+      return;
+    }
+
     setIsSearching(true);
+    setSearchResults([]);
 
-    // 검색 결과 목업 (실제로는 API 응답을 사용)
-    setTimeout(() => {
-      // 검색어에 따른 결과 필터링 예시
-      const mockResults = [
+    try {
+      const response = await fetch(
+        `http://localhost:8080/api/vi/crawl/${encodeURIComponent(albumSearch)}`,
         {
-          id: 1,
-          title: "뱅뱅뱅",
-          artist: "빅뱅",
-          coverUrl: null,
-          color: "#6b8cbb",
-        },
-        {
-          id: 2,
-          title: "Map of the Soul",
-          artist: "방탄소년단",
-          coverUrl: null,
-          color: "#8facd0",
-        },
-        {
-          id: 3,
-          title: "Celebrity",
-          artist: "아이유",
-          coverUrl: null,
-          color: "#a3bce0",
-        },
-        {
-          id: 4,
-          title: "OMG",
-          artist: "뉴진스",
-          coverUrl: null,
-          color: "#6b8cbb",
-        },
-        {
-          id: 5,
-          title: "Next Level",
-          artist: "에스파",
-          coverUrl: null,
-          color: "#7d9bc6",
-        },
-      ];
+          method: "GET",
+          headers: {
+            Accept: "application/json",
+          },
+        }
+      );
 
-      setSearchResults(mockResults);
+      const responseData = await response.json();
+
+      if (!response.ok || responseData.statusCode !== 200) {
+        throw new Error(responseData.message || "검색 중 오류가 발생했습니다.");
+      }
+
+      // API 응답의 data 배열을 파싱하여 UI에 맞게 변환
+      const formattedResults = responseData.data.map((imageUrl, index) => ({
+        id: index + 1,
+        title: `검색 결과 ${index + 1}`,
+        artist: albumSearch,
+        coverUrl: imageUrl,
+        color: "#6b8cbb",
+      }));
+
+      setSearchResults(formattedResults);
+    } catch (error) {
+      console.error("앨범 검색 오류:", error);
+      alert(error.message);
+      setSearchResults([]);
+    } finally {
       setIsSearching(false);
-    }, 500);
+    }
   };
 
   // 앨범 커버 선택
   const handleSelectCover = (album) => {
     setCoverImage(album.coverUrl);
-    // 선택한 앨범과 일치하도록 노래 정보 자동 채우기 (옵션)
-    if (!title) setTitle(album.title);
-    if (!artist) setArtist(album.artist);
+    // 선택한 앨범의 정보가 제한적이므로 검색어를 아티스트로 사용
+    if (!artist) setArtist(albumSearch);
   };
 
   // 노래 추가 제출
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-
-    // 간단한 유효성 검사
-    if (!title || !artist) {
-      alert("노래 제목과 가수는 필수입니다.");
-      return;
-    }
-
-    // 노래 추가
-    onAddSong({
+    const newSong = {
       title,
       artist,
       genre,
       difficulty,
       coverImage,
-    });
+      youtubeLink,
+      africaLink,
+    };
+    onAddSong(newSong);
+    onClose();
   };
 
   return (
@@ -187,6 +178,35 @@ const AddSongModal = ({ onClose, onAddSong }) => {
                   ))}
                 </select>
               </div>
+            </div>
+
+            <h3 className="section-subtitle">링크 정보</h3>
+            <div className="form-group">
+              <label htmlFor="youtubeLink" className="form-label">
+                유튜브 링크
+              </label>
+              <input
+                type="url"
+                id="youtubeLink"
+                className="form-control"
+                value={youtubeLink}
+                onChange={(e) => setYoutubeLink(e.target.value)}
+                placeholder="https://youtube.com/watch?v=..."
+              />
+            </div>
+
+            <div className="form-group">
+              <label htmlFor="africaLink" className="form-label">
+                아프리카TV 링크
+              </label>
+              <input
+                type="url"
+                id="africaLink"
+                className="form-control"
+                value={africaLink}
+                onChange={(e) => setAfricaLink(e.target.value)}
+                placeholder="https://afreecatv.com/..."
+              />
             </div>
 
             <h3 className="section-subtitle">앨범 커버 검색</h3>
