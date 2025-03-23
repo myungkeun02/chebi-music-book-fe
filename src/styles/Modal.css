@@ -152,46 +152,53 @@
 
 /* 검색 관련 스타일 */
 .search-group {
+  position: relative;
   display: flex;
-  margin-bottom: 20px;
-  max-width: 500px;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.search-group .form-control {
+  padding: 0.7rem 1rem;
+  padding-right: 4rem;
+  border: 1px solid #e0e0e0;
+  border-radius: 5px;
+  font-size: 0.9rem;
   width: 100%;
+  transition: all 0.3s ease;
+  height: 46px;
 }
 
-.search-form {
-  display: flex;
-  justify-content: center;
-  width: 100%;
-  margin-bottom: 24px;
-}
-
-.search-btn {
-  background-color: #4a6fa5;
-  color: white;
-  border: none;
-  padding: 8px 12px;
-  border-radius: 0 4px 4px 0;
-  cursor: pointer;
-  transition: background-color 0.2s;
-}
-
-.search-btn:hover {
-  background-color: #3a5a8a;
-}
-
-.search-form .form-control {
-  border-radius: 4px 0 0 4px;
-  border-right: none;
-  padding: 8px 12px;
-  font-size: 16px;
-  width: 100%;
-  border: 1px solid #ced4da;
-}
-
-.search-form .form-control:focus {
+.search-group .form-control:focus {
+  border-color: #6b8cbb;
+  box-shadow: 0 0 0 2px rgba(107, 140, 187, 0.2);
   outline: none;
-  border-color: #4a6fa5;
-  box-shadow: 0 0 0 2px rgba(74, 111, 165, 0.2);
+}
+
+.search-group .search-btn {
+  position: absolute;
+  right: 0.5rem;
+  padding: 0.5rem 1rem;
+  background: #4a6fa5;
+  border: none;
+  color: white;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border-radius: 5px 5px 5px 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  height: 28px;
+}
+
+.search-group .search-btn:hover {
+  background: #3a5a8a;
+  transform: scale(1.05);
+}
+
+.search-group .search-btn i {
+  font-size: 1.1rem;
 }
 
 /* 앨범 검색 결과 영역 */

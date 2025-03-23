@@ -9,7 +9,8 @@ const EditSongModal = ({ song, onClose, onUpdateSong }) => {
   const [coverImage, setCoverImage] = useState(null);
   const [albumSearch, setAlbumSearch] = useState("");
   const [searchResults, setSearchResults] = useState([]);
-  const [isSearching, setIsSearching] = useState(false);
+  const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(false);
   const [youtubeLink, setYoutubeLink] = useState("");
   const [africaLink, setAfricaLink] = useState("");
 
@@ -43,62 +44,59 @@ const EditSongModal = ({ song, onClose, onUpdateSong }) => {
     }
   }, [song]);
 
-  // 앨범 커버 검색 시뮬레이션
-  const handleSearchAlbum = (e) => {
-    e.preventDefault();
+  // 앨범 커버 검색 API 호출
+  const handleAlbumSearch = async () => {
+    if (!albumSearch.trim()) {
+      setError("검색어를 입력해주세요.");
+      return;
+    }
 
-    // 실제로는 백엔드 API 호출
-    setIsSearching(true);
+    setLoading(true);
+    setError(null);
 
-    // 검색 결과 목업 (실제로는 API 응답을 사용)
-    setTimeout(() => {
-      // 검색어에 따른 결과 필터링 예시
-      const mockResults = [
+    try {
+      const response = await fetch(
+        `http://141.164.54.157:8080/api/vi/crawl/${encodeURIComponent(
+          albumSearch
+        )}`,
         {
-          id: 1,
-          title: "뱅뱅뱅",
-          artist: "빅뱅",
-          coverUrl: null,
-          color: "#6b8cbb",
-        },
-        {
-          id: 2,
-          title: "Map of the Soul",
-          artist: "방탄소년단",
-          coverUrl: null,
-          color: "#8facd0",
-        },
-        {
-          id: 3,
-          title: "Celebrity",
-          artist: "아이유",
-          coverUrl: null,
-          color: "#a3bce0",
-        },
-        {
-          id: 4,
-          title: "OMG",
-          artist: "뉴진스",
-          coverUrl: null,
-          color: "#6b8cbb",
-        },
-        {
-          id: 5,
-          title: "Next Level",
-          artist: "에스파",
-          coverUrl: null,
-          color: "#7d9bc6",
-        },
-      ];
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
 
-      setSearchResults(mockResults);
-      setIsSearching(false);
-    }, 500);
+      const responseData = await response.json();
+
+      if (!response.ok || responseData.statusCode !== 200) {
+        throw new Error(responseData.message || "검색 중 오류가 발생했습니다.");
+      }
+
+      // API 응답의 data 배열을 파싱하여 UI에 맞게 변환
+      const formattedResults = responseData.data.map((imageUrl, index) => ({
+        id: index + 1,
+        title: `검색 결과 ${index + 1}`,
+        artist: albumSearch,
+        coverUrl: imageUrl,
+        color: "#6b8cbb",
+      }));
+
+      setSearchResults(formattedResults);
+    } catch (error) {
+      console.error("앨범 검색 오류:", error);
+      alert(error.message);
+      setSearchResults([]);
+    } finally {
+      setLoading(false);
+    }
   };
 
   // 앨범 커버 선택
   const handleSelectCover = (album) => {
     setCoverImage(album.coverUrl);
+    // 선택한 앨범의 정보가 제한적이므로 검색어를 아티스트로 사용
+    if (!artist) setArtist(albumSearch);
   };
 
   // 노래 수정 제출
@@ -236,19 +234,29 @@ const EditSongModal = ({ song, onClose, onUpdateSong }) => {
                 placeholder="앨범명 또는 가수명으로 검색..."
                 value={albumSearch}
                 onChange={(e) => setAlbumSearch(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    handleAlbumSearch();
+                  }
+                }}
               />
               <button
                 type="button"
                 className="btn btn-primary search-btn"
-                onClick={handleSearchAlbum}
+                onClick={handleAlbumSearch}
               >
+                <i className="fas fa-search"></i>
                 검색
               </button>
             </div>
 
+            {error && <div className="error-message">{error}</div>}
+
             {/* 앨범 커버 검색 결과 */}
             <div className="album-results">
-              {isSearching ? (
+              {loading ? (
                 <div className="loading">검색 중...</div>
               ) : (
                 <div className="album-grid">

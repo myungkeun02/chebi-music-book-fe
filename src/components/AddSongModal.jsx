@@ -9,9 +9,10 @@ const AddSongModal = ({ onClose, onAddSong }) => {
   const [coverImage, setCoverImage] = useState(null);
   const [albumSearch, setAlbumSearch] = useState("");
   const [searchResults, setSearchResults] = useState([]);
-  const [isSearching, setIsSearching] = useState(false);
   const [youtubeLink, setYoutubeLink] = useState("");
   const [africaLink, setAfricaLink] = useState("");
+  const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   // 장르 옵션
   const genreOptions = [
@@ -31,23 +32,24 @@ const AddSongModal = ({ onClose, onAddSong }) => {
   const difficultyOptions = ["쉬움", "보통", "어려움"];
 
   // 앨범 커버 검색 API 호출
-  const handleSearchAlbum = async (e) => {
-    e.preventDefault();
-
+  const handleAlbumSearch = async () => {
     if (!albumSearch.trim()) {
+      setError("검색어를 입력해주세요.");
       return;
     }
 
-    setIsSearching(true);
-    setSearchResults([]);
+    setLoading(true);
+    setError(null);
 
     try {
       const response = await fetch(
-        `http://localhost:8080/api/vi/crawl/${encodeURIComponent(albumSearch)}`,
+        `http://141.164.54.157:8080/api/vi/crawl/${encodeURIComponent(
+          albumSearch
+        )}`,
         {
           method: "GET",
           headers: {
-            Accept: "application/json",
+            "Content-Type": "application/json",
           },
         }
       );
@@ -73,7 +75,7 @@ const AddSongModal = ({ onClose, onAddSong }) => {
       alert(error.message);
       setSearchResults([]);
     } finally {
-      setIsSearching(false);
+      setLoading(false);
     }
   };
 
@@ -218,19 +220,29 @@ const AddSongModal = ({ onClose, onAddSong }) => {
                 placeholder="앨범명 또는 가수명으로 검색..."
                 value={albumSearch}
                 onChange={(e) => setAlbumSearch(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    handleAlbumSearch();
+                  }
+                }}
               />
               <button
                 type="button"
                 className="btn btn-primary search-btn"
-                onClick={handleSearchAlbum}
+                onClick={handleAlbumSearch}
               >
+                <i className="fas fa-search"></i>
                 검색
               </button>
             </div>
 
+            {error && <div className="error-message">{error}</div>}
+
             {/* 앨범 커버 검색 결과 */}
             <div className="album-results">
-              {isSearching ? (
+              {loading ? (
                 <div className="loading">검색 중...</div>
               ) : (
                 <div className="album-grid">
